@@ -1,5 +1,5 @@
 # Computational Musicology
-## Corpus: my personal "This is: Sebas" playlist.
+## Corpus: my personal "This is: Sebas" playlist
 
 In 2017 i created a playlist with the idea of adding every song i like to it through the years. Until now i have added 1095 songs to my playlist. It's also important to note that my main source of music is spotify. I've always found that my music taste is kind of variable with a lot of different genre's but i do wonder if there are similarities or patterns to be found in all the music to be able to pinpoint why i like certain music.
 
@@ -20,5 +20,5 @@ As my music taste changed a lot since 2017 i might only want to use songs i adde
 Next it would be interesting to see if i could group songs based on moods which i could then use as separate playlists.
 
 
-## link to playlist
+## Link to playlist
 https://open.spotify.com/playlist/5zSzru2LrIR0o8SUyLelyd?si=G_XxooasSYyhyixlqyRA8Q
