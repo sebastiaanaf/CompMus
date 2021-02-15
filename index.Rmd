@@ -1,5 +1,5 @@
 ---
-title: "index"
+title: "Computational Musicology"
 output: html_document
 ---
 
@@ -7,30 +7,89 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+library(spotifyr)
+library(ggplot2)
+library(ggfortify)
+library(gganimate)
+```
 
-# Computational Musicology
+```{r}
+sebas <- get_playlist_audio_features("", "5zSzru2LrIR0o8SUyLelyd")
+```
+```{r}
+sebas <- sebas %>%
+  filter(!is.na(key))
+
+
+seb2017 <- sebas %>%
+  filter(grepl('2017', added_at))
+
+seb2018 <- sebas %>%
+  filter(grepl('2018', added_at))
+
+seb2019 <- sebas %>%
+  filter(grepl('2019', added_at))
+
+seb2020 <- sebas %>%
+  filter(grepl('2020', added_at))
+
+```
+
+```{r}
+seventotwenty <-
+  bind_rows(
+    seb2017 %>% mutate(category = "2017"),
+    seb2018 %>% mutate(category = "2018"),
+    seb2019 %>% mutate(category = "2019"),
+    seb2020 %>% mutate(category = "2020")
+  )
+```
+
+
+
+
 ## Corpus: my personal "This is: Sebas" playlist
 
 In 2017 i created a playlist with the idea of adding every song i like to it through the years. Until now i have added 1095 songs to my playlist. It's also important to note that my main source of music is spotify. I've always found that my music taste is kind of variable with a lot of different genre's but i do wonder if there are similarities or patterns to be found in all the music to be able to pinpoint why i like certain music.
 
+
 ## Global Playlist Research
 First i would like to answer some questions over the playlist globally to see if there is a red thread in my music taste: 
-What is the most frequent genre in the playlist?
-Do i like songs in a certain key even across different genres?
-Is the majority of the songs in a certain bpm range? What is the most frequent modality?
+Is there a certain key across all songs that i like particularly?
+Is the majority of the songs in a certain bpm range? 
+What is the most frequent modality?
 How similar is the valence across the playlist?
-What about the time signatures?
 
-## Finding music taste in smaller sub-groups of the playlist
-As my music taste changed a lot since 2017 i might only want to use songs i added over the last few years to get a more accurate current view. However, it might also be interesting to see when my music taste started changing or expanding. Furthermore i could also look at songs added per year, maybe i can find a clear music taste per year. Perhaps only using the most frequently played songs from the playlist gives better results.
+# key global playlist/years
+Below shows the key frequency over the whole playlist. You can see that i don't necessarily have a preference of a certain key over the whole playlist or per year. However, i do seem to dislike D#.
+```{r}
+seventotwenty %>%
+  ggplot(aes(x = factor(key_name), fill = category)) +
+  geom_bar() +
+  xlab("Keys (factored)") +
+  ylab("Frequency")+
+  ggtitle("Key frequency all tracks/ tracks per year")
+```
+
+# mode global playlist/years
+Below shows the mode frequency over the whole playlist. I seem to prefer songs with a major modality this also reflects in the "per year" category.
+```{r}
+seventotwenty %>%
+  ggplot(aes(x = factor(mode), fill = category)) +
+  geom_bar() +
+  xlab("Mode (factored)") +
+  ylab("Frequency")+
+  ggtitle("Mode frequency all tracks/ tracks per year")
+```
 
 
 ## Further Research
-
-Next it would be interesting to see if i could group songs based on moods which i could then use as separate playlists.
+As i was struggling too much with finding what graphs and data to use i don't have a lot of interesting things yet.
+I would like to expand on researching per year and over the entire playlist, but also experiment with smaller groups: per month, seasonal.
+Furthermore i'd like to involve genres as that seems like one of the most important things in music. Sadly i have yet to figure out how to get genre data per track if at all possible. 
 
 
 ## Link to playlist
 https://open.spotify.com/playlist/5zSzru2LrIR0o8SUyLelyd?si=G_XxooasSYyhyixlqyRA8Q
-
-# TEST TEST

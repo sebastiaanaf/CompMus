@@ -116,3 +116,178 @@ awards %>%                    # Start with awards.
     colour = "Mode"
   )
 ```
+
+
+
+
+
+
+
+
+OPSLAG
+
+HISTS:
+```{r}
+seventotwenty %>%
+  ggplot(aes(x = key)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = mode)) +
+  geom_histogram(binwidth = 0.1) +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = valence)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = loudness)) +
+  geom_histogram(binwidth = 0.1) +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = energy)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = tempo)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = instrumentalness)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+seventotwenty %>%
+  ggplot(aes(x = danceability)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+sebas %>%
+  ggplot(aes(x = key)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+
+seventotwenty %>%
+  ggplot(aes(x = mode)) +
+  geom_histogram() 
+
+sebas %>%
+  ggplot(aes(x = valence)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+
+sebas %>%
+  ggplot(aes(x = loudness)) +
+  geom_histogram(binwidth = 0.1) 
+
+
+sebas %>%
+  ggplot(aes(x = energy)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+
+
+sebas %>%
+  ggplot(aes(x = tempo)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+  
+
+sebas %>%
+  ggplot(aes(x = instrumentalness)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+
+
+sebas %>%
+  ggplot(aes(x = danceability)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+```
+
+
+
+RANDOM SHIT
+```{r}
+seventotwenty %>%
+  ggplot(aes(x = valence)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+sebas %>%
+  ggplot(aes(x = valence)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+  
+seventotwenty %>%
+  ggplot(aes(x = tempo)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+sebas %>%
+  ggplot(aes(x = tempo)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10()
+
+seventotwenty %>%
+  ggplot(aes(x = valence)) +
+  geom_histogram(binwidth = 0.1) +
+  scale_x_log10() +
+  facet_wrap(~category)
+
+sebas %>%
+  ggplot(aes(y = tempo,x = time_signature)) +
+  geom_violin() 
+seventotwenty %>%
+  ggplot(aes(x = category, y = tempo)) +
+  geom_violin() +
+  scale_y_log10()
+
+
+seventotwenty %>%
+  ggplot(aes(x = valence, y = energy)) +
+  geom_point(binwidth = 0.1) 
+```
+
+```{r}
+sebas %>% 
+  ggplot(aes(x = added_at, y = key)) +
+  geom_point()
+
+seb2017 %>%
+  ggplot(aes(x = loudness, y = tempo)) +
+  geom_point()  
+
+seb2018 %>%
+  ggplot(aes(x = loudness, y = tempo)) +
+  geom_point()  
+
+seb2019 %>%
+  ggplot(aes(x = loudness, y = tempo)) +
+  geom_point()  
+
+seb2020 %>%
+  ggplot(aes(x = loudness, y = tempo)) +
+  geom_point()  
+
+seventotwenty %>%
+  ggplot(aes(x = category, y = key)) +
+  geom_violin() +
+  scale_y_log10()
+
+
+```
