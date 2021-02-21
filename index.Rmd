@@ -23,7 +23,6 @@ sebas <- get_playlist_audio_features("", "5zSzru2LrIR0o8SUyLelyd")
 sebas <- sebas %>%
   filter(!is.na(key))
 
-
 seb2017 <- sebas %>%
   filter(grepl('2017', added_at))
 
@@ -56,7 +55,95 @@ modefreqyear <- seventotwenty %>%
   geom_bar() +
   xlab("Mode (factored)") +
   ylab("Frequency")+
-  ggtitle("Mode frequency all tracks/ tracks per year")
+  ggtitle("Mode frequency all tracks/ tracks per year") +
+  scale_x_discrete(labels=c("0" = "Minor", "1" = "Major"))
+
+
+valeneryear <- seventotwenty %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy all tracks/ tracks per year")
+
+
+valendancepop <- sebas %>%
+ ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+
+
+
+valendancepopyear <- seventotwenty %>%
+ ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
 ```
 
 
@@ -66,45 +153,60 @@ modefreqyear <- seventotwenty %>%
 
 #### Corpus: my personal "This is: Sebas" playlist
 
-In 2017 i created a playlist with the idea of adding every song i like to it through the years. Until now i have added 1095 songs to my playlist. It's also important to note that my main source of music is spotify. I've always found that my music taste is kind of variable with a lot of different genre's but i do wonder if there are similarities or patterns to be found in all the music to be able to pinpoint why i like certain music.
+In 2017 i created a playlist with the idea of adding every song i like to it through the years. Until now i have added 1095 songs to my playlist. It's also important to note that my main source of music is spotify. I've always found that my music taste is kind of variable with a lot of different genre's but i do wonder if there are similarities or patterns to be found in all the music to be able to pinpoint why i like certain music. 
 
 
-#### Global Playlist Research
-First i would like to answer some questions over the playlist globally to see if there is a red thread in my music taste: 
+#### Playlist-Wide Research
+First i would like to answer some questions about the playlist in general: 
 Is there a certain key across all songs that i like particularly?
-Is the majority of the songs in a certain bpm range? 
 What is the most frequent modality?
+Is the majority of the songs in a certain bpm range? 
 How similar is the valence across the playlist?
+How high is the energy in the playlist
+
+I suspect key, bpm and modality to be evenly distributed due to all the different genres and valence and energy to be all over the place.
 
 #### Further Research
-As i was struggling too much with finding what graphs and data to use i don't have a lot of interesting things yet.
-I would like to expand on researching per year and over the entire playlist, but also experiment with smaller groups: per month, seasonal.
-Furthermore i'd like to involve genres as that seems like one of the most important things in music. Sadly i have yet to figure out how to get genre data per track if at all possible. 
-
+I would like to expand on researching per year, per season and maybe even per month as i expect to see more interesting things happening in smaller time periods.
+Furthermore i'd like to involve genres as that seems like one of the most important things in music taste. Sadly there is no way to do this per track so i might try to take the genres from the albums the songs are coming from.
 
 #### Link to playlist
 https://open.spotify.com/playlist/5zSzru2LrIR0o8SUyLelyd?si=G_XxooasSYyhyixlqyRA8Q
 
 
 
-### KEYS
+### Keys
 
 ```{r echo=FALSE, message=FALSE}
-keyfreqyear
+ggplotly(keyfreqyear)
 ```
 
 ***
 
-* Below shows the key frequency over the whole playlist. You can see that i don't necessarily have a preference of a certain key over the whole playlist or per year. However, i do seem to dislike D#.
+* As you can see the key frequency over the whole playlist is distributed fairly even, however C# and G seem to be the most common with over a hundred songs each and D# the least with only 22 songs. So i conclude that either i really like C# and G and dislike D# or these are just very popular/uncpopular keys in music in general. 
 
-### MODALITY
+### Modality
 
 ```{r echo=FALSE, message=FALSE}
-modefreqyear
+ggplotly(modefreqyear) 
 ```
 
 ***
 
-* Below shows the mode frequency over the whole playlist. I seem to prefer songs with a major modality this also reflects in the "per year" category.
+* As you can see i seem to prefer songs with a major modality this also reflects in the "per year" category.
 
+### Valence
 
+```{r echo=FALSE, message=FALSE}
+ggplotly(valeneryear) 
+```
+
+***
+
+* As expected the valence and energy are all over the place.
+
+### testing ignore
+
+```{r}
+ggplotly(valendancepopyear)
+```
