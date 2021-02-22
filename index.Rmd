@@ -35,6 +35,7 @@ seb2019 <- sebas %>%
 seb2020 <- sebas %>%
   filter(grepl('2020', added_at))
 
+
 seventotwenty <-
   bind_rows(
     seb2017 %>% mutate(category = "2017"),
@@ -42,6 +43,32 @@ seventotwenty <-
     seb2019 %>% mutate(category = "2019"),
     seb2020 %>% mutate(category = "2020")
   )
+
+
+# months
+seb1708 <- sebas %>%
+  filter(grepl('2017-08', added_at))
+
+seb1709 <- sebas %>%
+  filter(grepl('2017-09', added_at))
+
+seb1710 <- sebas %>%
+  filter(grepl('2017-10', added_at))
+
+seb1711 <- sebas %>%
+  filter(grepl('2017-11', added_at))
+
+seb1712 <- sebas %>%
+  filter(grepl('2017-12', added_at))
+
+months_2017 <-
+  bind_rows(
+    seb1709 %>% mutate(category = "September 2017"),
+    seb1710 %>% mutate(category = "October 2017"),
+    seb1711 %>% mutate(category = "November 2017"),
+    seb1712 %>% mutate(category = "December 2017")
+  )
+
 
 keyfreqyear <- seventotwenty %>%
 ggplot(aes(x = factor(key_name), fill = category)) +
@@ -66,44 +93,13 @@ valeneryear <- seventotwenty %>%
   ylab("Energy")+
   ggtitle("Valence vs Energy all tracks/ tracks per year")
 
+valener_2017_m <- months_2017 %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy September-December/ 2017")
 
-valendancepop <- sebas %>%
- ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
 
 
 
@@ -144,6 +140,48 @@ valendancepopyear <- seventotwenty %>%
     y = "Energy"
   ) +
   theme(strip.background = element_rect(fill="#660066"))
+
+
+
+vdp_2017_m <- months_2017 %>%
+  ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+  
+    
 ```
 
 
@@ -205,8 +243,25 @@ ggplotly(valeneryear)
 
 * As expected the valence and energy are all over the place.
 
-### testing ignore
+### Graphs
 
 ```{r}
 ggplotly(valendancepopyear)
+
+ggplotly(vdp_2017_m)
+
+ggplotly(valener_2017_m)
+
+```
+
+### Graphs
+
+```{r}
+ggplotly(vdp_2017_m)
+```
+
+### Graphs
+
+```{r}
+ggplotly(valener_2017_m)
 ```
