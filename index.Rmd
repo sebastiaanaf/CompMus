@@ -4,7 +4,7 @@ author: "Sebastiaan Aflaki"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
-    theme: journal 
+    theme: journal
 ---
 
 ```{r setup, include=FALSE}
@@ -207,9 +207,9 @@ key_templates <-
   )
 Build_God <-
   get_tidy_audio_analysis("7MMOPTjs6nZL0wf6C9ECKX") %>%
-  compmus_align(sections, segments) %>%
-  select(sections) %>%
-  unnest(sections) %>%
+  compmus_align(bars, segments) %>%
+  select(bars) %>%
+  unnest(bars) %>%
   mutate(
     pitches =
       map(segments,
@@ -227,16 +227,16 @@ Buildplot <- Build_God %>%
     aes(x = start + duration / 2, width = duration, y = name, fill = d)
   ) +
   geom_tile() +
-  scale_fill_viridis_c(guide = "none") +
+  scale_fill_viridis_c(guide = "none",option = "inferno")  +
   theme_minimal() +
   labs(x = "Time (s)", y = "") +
   ggtitle("2019-2020 Build God, Then We'll Talk - Panic! At The Disco")
 
 Bohem <-
   get_tidy_audio_analysis("1AhDOtG9vPSOmsWgNW0BEY") %>%
-  compmus_align(sections, segments) %>%
-  select(sections) %>%
-  unnest(sections) %>%
+  compmus_align(bars, segments) %>%
+  select(bars) %>%
+  unnest(bars) %>%
   mutate(
     pitches =
       map(segments,
@@ -244,6 +244,7 @@ Bohem <-
         method = "mean", norm = "manhattan"
       )
   )
+
 Bohemplot <- Bohem %>% 
   compmus_match_pitch_template(
     key_templates,         
@@ -254,16 +255,16 @@ Bohemplot <- Bohem %>%
     aes(x = start + duration / 2, width = duration, y = name, fill = d)
   ) +
   geom_tile() +
-  scale_fill_viridis_c(guide = "none") +
+  scale_fill_viridis_c(guide = "none",option = "inferno")  +
   theme_minimal() +
   labs(x = "Time (s)", y = "") +
   ggtitle("2018 Bohemian Rhapsody - Queen")
 
 Weight <-
   get_tidy_audio_analysis("2UZZtkoLOg7IHxeTAdPFvd") %>%
-  compmus_align(sections, segments) %>%
-  select(sections) %>%
-  unnest(sections) %>%
+ compmus_align(bars, segments) %>%
+  select(bars) %>%
+  unnest(bars) %>%
   mutate(
     pitches =
       map(segments,
@@ -282,7 +283,7 @@ Wplot <- Weight %>%
     aes(x = start + duration / 2, width = duration, y = name, fill = d)
   ) +
   geom_tile() +
-  scale_fill_viridis_c(guide = "none") +
+  scale_fill_viridis_c(guide = "none",option = "inferno")  +
   theme_minimal() +
   labs(x = "Time (s)", y = "") +
   ggtitle("2017 Weightless part 1 - Marconi Union")
@@ -310,7 +311,7 @@ Suburplot <- Sub %>%
     aes(x = start + duration / 2, width = duration, y = name, fill = d)
   ) +
   geom_tile() +
-  scale_fill_viridis_c(guide = "none") +
+  scale_fill_viridis_c(guide = "none",option = "inferno") +
   theme_minimal() +
   labs(x = "Time (s)", y = "") +
   ggtitle("2016 Jesus of Suburbia - Green Day")
@@ -367,7 +368,7 @@ valendancepopyear <- wrapped_16_20 %>%
 ```{r hists/bars, include=FALSE}
 
 keyfreqyear <- wrapped_16_20 %>%
-ggplot(aes(x = factor(key_name), fill = category)) +
+ggplot(aes(x = factor(key_name), fill = mode_name)) +
   geom_bar() +
   xlab("Keys") +
   ylab("Frequency")+
@@ -441,15 +442,16 @@ yearinstrumentalness <-  wrapped_16_20 %>%
 ```
 
 ### chordograms (NEW)
+
 ```{r echo=FALSE, message=FALSE}
 Buildplot
 Bohemplot
 Wplot
 Suburplot
-
-
 ```
+
 ***
+
 * (under construction)
 
 * 2020-2019
@@ -547,14 +549,20 @@ bind_rows(
 #### Spotify Wrapped 2016-2020
 Every december Spotify makes you a "wrapped" playlist of the 100 songs you most frequently listened to that year giving a clear picture of your music taste that year. I've always found that my music taste is kind of variable with a lot of different genre's so it would be interesting to see how my music taste has changed from 2016 till now. To compare my music taste from 2016 to 2020 i will analyze my Spotify wrapped 2016-2020 playlists using the following metrics: **valence, danceability, energy, tempo and modality.**
 
-After getting a global idea i'd like to take one favorite song from each year which i will compare in more depth, using the metrics mentioned above and chroma/timbregrams to look at similarities/differences.
+After getting a global idea i'd like to take one favorite song from each year which i will compare in more depth, using the metrics mentioned above and chroma/timbregrams to look at similarities/differences. (WIP)
 
 #### Corpus:
+
 My Corpus is divided into 5 groups of spotify wrapped playlists representing 2016 to 2020:
+
 [Wrapped 2016](https://open.spotify.com/playlist/37i9dQZF1Cz24RS3exilwM?si=ZOze5nWySsWErYrc3xVM4Q)
+
 [Wrapped 2017](https://open.spotify.com/playlist/37i9dQZF1E9Jzat5fcogxI?si=1ehaYOK2QXaN7Zj5addPPw)
+
 [Wrapped 2018](https://open.spotify.com/playlist/37i9dQZF1EjvCrCRRFYOR7?si=Yr8yJlFfTmCiSsGq3JJtWQ)
+
 [Wrapped 2019](https://open.spotify.com/playlist/37i9dQZF1Etlshd0CHSHbz?si=WTbkaVjySZizef_MzektQA)
+
 [Wrapped 2020](https://open.spotify.com/playlist/37i9dQZF1EMdGOBLndfzlm?si=yB3xeK53Trqhc_xIE69a3A)
 
 
@@ -569,9 +577,11 @@ ggplotly(valdens)
 
 ***
 
-* WIP
+* You can clearly see that most of favorite songs in 2016, 2017 and 2018 were "happier" than my most favorite songs in 2019 and 2020. Although 2019 has some outliers with music is used for sleeping which all have a really low valence score.
 
-### Multi
+
+### Multivariate Musicology
+
 ```{r echo=FALSE, message=FALSE}
 ggplotly(valendancepopyear)
 
