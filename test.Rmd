@@ -1,3 +1,542 @@
+### old graphs
+``` {r actualgraphs, include=FALSE}
+keyfreqyear <- seventotwenty %>%
+ggplot(aes(x = factor(key_name), fill = category)) +
+  geom_bar() +
+  xlab("Keys (factored)") +
+  ylab("Frequency")+
+  ggtitle("Key frequency all tracks/ tracks per year")
+
+modefreqyear <- seventotwenty %>%
+  ggplot(aes(x = factor(mode), fill = category)) +
+  geom_bar() +
+  xlab("Mode (factored)") +
+  ylab("Frequency")+
+  ggtitle("Mode frequency all tracks/ tracks per year") +
+  scale_x_discrete(labels=c("0" = "Minor", "1" = "Major"))
+
+
+valeneryear <- seventotwenty %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy all tracks/ tracks per year")
+
+valener_2017_m <- months_2017 %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy September-December/ 2017")
+
+valener_2018_m <- months_2018 %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy Janu-December/ 2018")
+
+valener_2019_m <- months_2019 %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy September-December/ 2019")
+
+valener_2020_m <- months_2020 %>%
+  ggplot(aes(x = valence, y = energy, fill = category)) +
+  geom_point() +
+  xlab("Valence") +
+  ylab("Energy")+
+  ggtitle("Valence vs Energy September-December/ 2020")
+
+
+valendancepopyear <- seventotwenty %>%
+ ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+
+
+
+vdp_2017_m <- months_2017 %>%
+  ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+
+vdp_2018_m <- months_2018 %>%
+  ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+
+vdp_2019_m <- months_2019 %>%
+  ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+
+
+
+vdp_2020_m <- months_2020 %>%
+  ggplot(                          # Set up the plot.
+    aes(
+      x = valence,
+      y = energy,
+      size = track.popularity,
+      colour = danceability,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point() +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_colour_viridis_c(          # Use the cividis palette
+    option = "A",                  # Qualitative set.
+    alpha = 0.8,                   # Include some transparency
+    guide = "none"
+  ) +
+  scale_size_continuous(           # Fine-tune the sizes of each point.
+    guide = "none"                 # Remove the legend for size.
+  ) +
+  theme_light() +                  # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Valence",
+    y = "Energy"
+  ) +
+  theme(strip.background = element_rect(fill="#660066"))
+  
+```
+
+
+### Valence VS Energy (Monthly) 2017
+
+```{r echo=FALSE, message=FALSE}
+ggplotly(vdp_2017_m)
+```
+
+### Valence VS Energy (Monthly) 2018
+
+```{r echo=FALSE, message=FALSE}
+ggplotly(vdp_2018_m)
+```
+
+### Valence VS Energy (Monthly) 2019
+
+```{r echo=FALSE, message=FALSE}
+ggplotly(vdp_2019_m)
+```
+
+### Valence VS Energy (Monthly) 2020
+
+```{r echo=FALSE, message=FALSE}
+ggplotly(vdp_2020_m)
+```
+
+### old prepro
+
+```{r preproyears, include=FALSE}
+
+
+seb2017 <- sebas %>%
+  filter(grepl('2017', added_at))
+
+seb2018 <- sebas %>%
+  filter(grepl('2018', added_at))
+
+seb2019 <- sebas %>%
+  filter(grepl('2019', added_at))
+
+seb2020 <- sebas %>%
+  filter(grepl('2020', added_at))
+
+
+seventotwenty <-
+  bind_rows(
+    seb2017 %>% mutate(category = "2017"),
+    seb2018 %>% mutate(category = "2018"),
+    seb2019 %>% mutate(category = "2019"),
+    seb2020 %>% mutate(category = "2020")
+  )
+
+```
+
+```{r prepromonths, include=FALSE}
+# months
+seb1708 <- sebas %>%
+  filter(grepl('2017-08', added_at))
+
+seb1709 <- sebas %>%
+  filter(grepl('2017-09', added_at))
+
+seb1710 <- sebas %>%
+  filter(grepl('2017-10', added_at))
+
+seb1711 <- sebas %>%
+  filter(grepl('2017-11', added_at))
+
+seb1712 <- sebas %>%
+  filter(grepl('2017-12', added_at))
+
+
+months_2017 <-
+  bind_rows(
+    seb1708 %>% mutate(category = "August 2017"),
+    seb1709 %>% mutate(category = "September 2017"),
+    seb1710 %>% mutate(category = "October 2017"),
+    seb1711 %>% mutate(category = "November 2017"),
+    seb1712 %>% mutate(category = "December 2017")
+  )
+
+
+seb1801 <- sebas %>%
+  filter(grepl('2018-01', added_at))
+
+seb1802 <- sebas %>%
+  filter(grepl('2018-02', added_at))
+
+seb1803 <- sebas %>%
+  filter(grepl('2018-03', added_at))
+
+seb1804 <- sebas %>%
+  filter(grepl('2018-04', added_at))
+
+seb1805 <- sebas %>%
+  filter(grepl('2018-05', added_at))
+
+seb1806 <- sebas %>%
+  filter(grepl('2018-06', added_at))
+
+seb1807 <- sebas %>%
+  filter(grepl('2018-07', added_at))
+
+seb1808 <- sebas %>%
+  filter(grepl('2018-08', added_at))
+
+seb1809 <- sebas %>%
+  filter(grepl('2018-09', added_at))
+
+seb1810 <- sebas %>%
+  filter(grepl('2018-10', added_at))
+
+seb1811 <- sebas %>%
+  filter(grepl('2018-11', added_at))
+
+seb1812 <- sebas %>%
+  filter(grepl('2018-12', added_at))
+
+months_2018 <-
+  bind_rows(
+    seb1801 %>% mutate(category = "January 2018"),
+    seb1802 %>% mutate(category = "February 2018"),
+    seb1803 %>% mutate(category = "March 2018"),
+    seb1804 %>% mutate(category = "April 2018"),
+    seb1805 %>% mutate(category = "May 2018"),
+    seb1806 %>% mutate(category = "Juni 2018"),
+    seb1807 %>% mutate(category = "Juli 2018"),
+    seb1808 %>% mutate(category = "August 2018"),
+    seb1809 %>% mutate(category = "September 2018"),
+    seb1810 %>% mutate(category = "October 2018"),
+    seb1811 %>% mutate(category = "November 2018"),
+    seb1812 %>% mutate(category = "December 2018")
+  )
+
+seb1901 <- sebas %>%
+  filter(grepl('2019-01', added_at))
+
+seb1902 <- sebas %>%
+  filter(grepl('2019-02', added_at))
+
+seb1903 <- sebas %>%
+  filter(grepl('2019-03', added_at))
+
+seb1904 <- sebas %>%
+  filter(grepl('2019-04', added_at))
+
+seb1905 <- sebas %>%
+  filter(grepl('2019-05', added_at))
+
+seb1906 <- sebas %>%
+  filter(grepl('2019-06', added_at))
+
+seb1907 <- sebas %>%
+  filter(grepl('2019-07', added_at))
+
+seb1908 <- sebas %>%
+  filter(grepl('2019-08', added_at))
+
+seb1909 <- sebas %>%
+  filter(grepl('2019-09', added_at))
+
+seb1910 <- sebas %>%
+  filter(grepl('2019-10', added_at))
+
+seb1911 <- sebas %>%
+  filter(grepl('2019-11', added_at))
+
+seb1912 <- sebas %>%
+  filter(grepl('2019-12', added_at))
+
+months_2019 <-
+  bind_rows(
+    seb1901 %>% mutate(category = "January 2019"),
+    seb1902 %>% mutate(category = "February 2019"),
+    seb1903 %>% mutate(category = "March 2019"),
+    seb1904 %>% mutate(category = "April 2019"),
+    seb1905 %>% mutate(category = "May 2019"),
+    seb1906 %>% mutate(category = "Juni 2019"),
+    seb1907 %>% mutate(category = "Juli 2019"),
+    seb1908 %>% mutate(category = "August 2019"),
+    seb1909 %>% mutate(category = "September 2019"),
+    seb1910 %>% mutate(category = "October 2019"),
+    seb1911 %>% mutate(category = "November 2019"),
+    seb1912 %>% mutate(category = "December 2019")
+  )
+
+seb2001 <- sebas %>%
+  filter(grepl('2020-01', added_at))
+
+seb2002 <- sebas %>%
+  filter(grepl('2020-02', added_at))
+
+seb2003 <- sebas %>%
+  filter(grepl('2020-03', added_at))
+
+seb2004 <- sebas %>%
+  filter(grepl('2020-04', added_at))
+
+seb2005 <- sebas %>%
+  filter(grepl('2020-05', added_at))
+
+seb2006 <- sebas %>%
+  filter(grepl('2020-06', added_at))
+
+seb2007 <- sebas %>%
+  filter(grepl('2020-07', added_at))
+
+seb2008 <- sebas %>%
+  filter(grepl('2020-08', added_at))
+
+seb2009 <- sebas %>%
+  filter(grepl('2020-09', added_at))
+
+seb2010 <- sebas %>%
+  filter(grepl('2020-10', added_at))
+
+seb2011 <- sebas %>%
+  filter(grepl('2020-11', added_at))
+
+seb2012 <- sebas %>%
+  filter(grepl('2020-12', added_at))
+
+months_2020 <-
+  bind_rows(
+    seb2001 %>% mutate(category = "January 2020"),
+    seb2002 %>% mutate(category = "February 2020"),
+    seb2003 %>% mutate(category = "March 2020"),
+    seb2004 %>% mutate(category = "April 2020"),
+    seb2005 %>% mutate(category = "May 2020"),
+    seb2006 %>% mutate(category = "Juni 2020"),
+    seb2007 %>% mutate(category = "Juli 2020"),
+    seb2008 %>% mutate(category = "August 2020"),
+    seb2009 %>% mutate(category = "September 2020"),
+    seb2010 %>% mutate(category = "October 2020"),
+    seb2011 %>% mutate(category = "November 2020"),
+    seb2012 %>% mutate(category = "December 2020")
+  )
+```
+
+
+
+### hists test
+
+``` {r hists, include=FALSE}
+
+histm17 <- months_2017 %>%
+  ggplot(aes( x = valence)) +
+  geom_histogram(binwidth=.5, colour="black", fill="white") +
+  facet_wrap(~category)
+
+histm18 <- months_2018 %>%
+  ggplot(aes( x = valence)) +
+  geom_histogram(binwidth=.5, colour="black", fill="white") +
+  facet_wrap(~category)
+
+histm19 <- months_2019 %>%
+  ggplot(aes( x = valence)) +
+  geom_histogram(binwidth=.5, colour="black", fill="white") +
+  facet_wrap(~category)
+
+histm20 <- months_2020 %>%
+  ggplot(aes( x = valence)) +
+  geom_histogram(binwidth=.5, colour="black", fill="white") +
+  facet_wrap(~category)
+
+
+histm17 <- months_2017 %>%
+  ggplot(aes( x = valence)) +
+  geom_density() +
+  facet_wrap(~category)
+
+
+yeardens <- seventotwenty %>%
+  ggplot(aes( x = valence)) +
+   geom_histogram(aes(y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density(alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category)
+
+
+
+``` 
+
+```{r}
+histm17
+
+yeardens
+```
+
 ### CHROMA
 
 

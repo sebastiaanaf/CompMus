@@ -1,9 +1,10 @@
 ---
-title: "Computational Musicology"
+title: "Music Taste"
+author: "Sebastiaan Aflaki"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
-    theme: flatly
+    theme: journal 
 ---
 
 ```{r setup, include=FALSE}
@@ -18,471 +19,30 @@ library(lubridate)
 library(ggplot2)
 library(plotly)
 library(compmus)
-
+library(ggthemes)
+library(wesanderson)
 sebas <- get_playlist_audio_features("", "5zSzru2LrIR0o8SUyLelyd")
 
 sebas <- sebas %>%
   filter(!is.na(key))
-```
 
-```{r preproyears, include=FALSE}
-
-
-seb2017 <- sebas %>%
-  filter(grepl('2017', added_at))
-
-seb2018 <- sebas %>%
-  filter(grepl('2018', added_at))
-
-seb2019 <- sebas %>%
-  filter(grepl('2019', added_at))
-
-seb2020 <- sebas %>%
-  filter(grepl('2020', added_at))
-
-
-seventotwenty <-
-  bind_rows(
-    seb2017 %>% mutate(category = "2017"),
-    seb2018 %>% mutate(category = "2018"),
-    seb2019 %>% mutate(category = "2019"),
-    seb2020 %>% mutate(category = "2020")
-  )
+wrapped16 <- get_playlist_audio_features("", "37i9dQZF1Cz24RS3exilwM")
+wrapped17 <- get_playlist_audio_features("", "37i9dQZF1E9Jzat5fcogxI")
+wrapped18 <- get_playlist_audio_features("", "37i9dQZF1EjvCrCRRFYOR7")
+wrapped19 <- get_playlist_audio_features("", "37i9dQZF1Etlshd0CHSHbz")
+wrapped20 <- get_playlist_audio_features("", "37i9dQZF1EMdGOBLndfzlm")
 
 ```
 
-```{r prepromonths, include=FALSE}
-# months
-seb1708 <- sebas %>%
-  filter(grepl('2017-08', added_at))
-
-seb1709 <- sebas %>%
-  filter(grepl('2017-09', added_at))
-
-seb1710 <- sebas %>%
-  filter(grepl('2017-10', added_at))
-
-seb1711 <- sebas %>%
-  filter(grepl('2017-11', added_at))
-
-seb1712 <- sebas %>%
-  filter(grepl('2017-12', added_at))
-
-
-months_2017 <-
+```{r prepro wrapped}
+wrapped_16_20 <-
   bind_rows(
-    seb1708 %>% mutate(category = "August 2017"),
-    seb1709 %>% mutate(category = "September 2017"),
-    seb1710 %>% mutate(category = "October 2017"),
-    seb1711 %>% mutate(category = "November 2017"),
-    seb1712 %>% mutate(category = "December 2017")
+    wrapped16 %>% mutate(category = "2016"),
+    wrapped17 %>% mutate(category = "2017"),
+    wrapped18 %>% mutate(category = "2018"),
+    wrapped19 %>% mutate(category = "2019"),
+    wrapped20 %>% mutate(category = "2020")
   )
-
-
-seb1801 <- sebas %>%
-  filter(grepl('2018-01', added_at))
-
-seb1802 <- sebas %>%
-  filter(grepl('2018-02', added_at))
-
-seb1803 <- sebas %>%
-  filter(grepl('2018-03', added_at))
-
-seb1804 <- sebas %>%
-  filter(grepl('2018-04', added_at))
-
-seb1805 <- sebas %>%
-  filter(grepl('2018-05', added_at))
-
-seb1806 <- sebas %>%
-  filter(grepl('2018-06', added_at))
-
-seb1807 <- sebas %>%
-  filter(grepl('2018-07', added_at))
-
-seb1808 <- sebas %>%
-  filter(grepl('2018-08', added_at))
-
-seb1809 <- sebas %>%
-  filter(grepl('2018-09', added_at))
-
-seb1810 <- sebas %>%
-  filter(grepl('2018-10', added_at))
-
-seb1811 <- sebas %>%
-  filter(grepl('2018-11', added_at))
-
-seb1812 <- sebas %>%
-  filter(grepl('2018-12', added_at))
-
-months_2018 <-
-  bind_rows(
-    seb1801 %>% mutate(category = "January 2018"),
-    seb1802 %>% mutate(category = "February 2018"),
-    seb1803 %>% mutate(category = "March 2018"),
-    seb1804 %>% mutate(category = "April 2018"),
-    seb1805 %>% mutate(category = "May 2018"),
-    seb1806 %>% mutate(category = "Juni 2018"),
-    seb1807 %>% mutate(category = "Juli 2018"),
-    seb1808 %>% mutate(category = "August 2018"),
-    seb1809 %>% mutate(category = "September 2018"),
-    seb1810 %>% mutate(category = "October 2018"),
-    seb1811 %>% mutate(category = "November 2018"),
-    seb1812 %>% mutate(category = "December 2018")
-  )
-
-seb1901 <- sebas %>%
-  filter(grepl('2019-01', added_at))
-
-seb1902 <- sebas %>%
-  filter(grepl('2019-02', added_at))
-
-seb1903 <- sebas %>%
-  filter(grepl('2019-03', added_at))
-
-seb1904 <- sebas %>%
-  filter(grepl('2019-04', added_at))
-
-seb1905 <- sebas %>%
-  filter(grepl('2019-05', added_at))
-
-seb1906 <- sebas %>%
-  filter(grepl('2019-06', added_at))
-
-seb1907 <- sebas %>%
-  filter(grepl('2019-07', added_at))
-
-seb1908 <- sebas %>%
-  filter(grepl('2019-08', added_at))
-
-seb1909 <- sebas %>%
-  filter(grepl('2019-09', added_at))
-
-seb1910 <- sebas %>%
-  filter(grepl('2019-10', added_at))
-
-seb1911 <- sebas %>%
-  filter(grepl('2019-11', added_at))
-
-seb1912 <- sebas %>%
-  filter(grepl('2019-12', added_at))
-
-months_2019 <-
-  bind_rows(
-    seb1901 %>% mutate(category = "January 2019"),
-    seb1902 %>% mutate(category = "February 2019"),
-    seb1903 %>% mutate(category = "March 2019"),
-    seb1904 %>% mutate(category = "April 2019"),
-    seb1905 %>% mutate(category = "May 2019"),
-    seb1906 %>% mutate(category = "Juni 2019"),
-    seb1907 %>% mutate(category = "Juli 2019"),
-    seb1908 %>% mutate(category = "August 2019"),
-    seb1909 %>% mutate(category = "September 2019"),
-    seb1910 %>% mutate(category = "October 2019"),
-    seb1911 %>% mutate(category = "November 2019"),
-    seb1912 %>% mutate(category = "December 2019")
-  )
-
-seb2001 <- sebas %>%
-  filter(grepl('2020-01', added_at))
-
-seb2002 <- sebas %>%
-  filter(grepl('2020-02', added_at))
-
-seb2003 <- sebas %>%
-  filter(grepl('2020-03', added_at))
-
-seb2004 <- sebas %>%
-  filter(grepl('2020-04', added_at))
-
-seb2005 <- sebas %>%
-  filter(grepl('2020-05', added_at))
-
-seb2006 <- sebas %>%
-  filter(grepl('2020-06', added_at))
-
-seb2007 <- sebas %>%
-  filter(grepl('2020-07', added_at))
-
-seb2008 <- sebas %>%
-  filter(grepl('2020-08', added_at))
-
-seb2009 <- sebas %>%
-  filter(grepl('2020-09', added_at))
-
-seb2010 <- sebas %>%
-  filter(grepl('2020-10', added_at))
-
-seb2011 <- sebas %>%
-  filter(grepl('2020-11', added_at))
-
-seb2012 <- sebas %>%
-  filter(grepl('2020-12', added_at))
-
-months_2020 <-
-  bind_rows(
-    seb2001 %>% mutate(category = "January 2020"),
-    seb2002 %>% mutate(category = "February 2020"),
-    seb2003 %>% mutate(category = "March 2020"),
-    seb2004 %>% mutate(category = "April 2020"),
-    seb2005 %>% mutate(category = "May 2020"),
-    seb2006 %>% mutate(category = "Juni 2020"),
-    seb2007 %>% mutate(category = "Juli 2020"),
-    seb2008 %>% mutate(category = "August 2020"),
-    seb2009 %>% mutate(category = "September 2020"),
-    seb2010 %>% mutate(category = "October 2020"),
-    seb2011 %>% mutate(category = "November 2020"),
-    seb2012 %>% mutate(category = "December 2020")
-  )
-```
-
-``` {r actualgraphs, include=FALSE}
-keyfreqyear <- seventotwenty %>%
-ggplot(aes(x = factor(key_name), fill = category)) +
-  geom_bar() +
-  xlab("Keys (factored)") +
-  ylab("Frequency")+
-  ggtitle("Key frequency all tracks/ tracks per year")
-
-modefreqyear <- seventotwenty %>%
-  ggplot(aes(x = factor(mode), fill = category)) +
-  geom_bar() +
-  xlab("Mode (factored)") +
-  ylab("Frequency")+
-  ggtitle("Mode frequency all tracks/ tracks per year") +
-  scale_x_discrete(labels=c("0" = "Minor", "1" = "Major"))
-
-
-valeneryear <- seventotwenty %>%
-  ggplot(aes(x = valence, y = energy, fill = category)) +
-  geom_point() +
-  xlab("Valence") +
-  ylab("Energy")+
-  ggtitle("Valence vs Energy all tracks/ tracks per year")
-
-valener_2017_m <- months_2017 %>%
-  ggplot(aes(x = valence, y = energy, fill = category)) +
-  geom_point() +
-  xlab("Valence") +
-  ylab("Energy")+
-  ggtitle("Valence vs Energy September-December/ 2017")
-
-valener_2018_m <- months_2018 %>%
-  ggplot(aes(x = valence, y = energy, fill = category)) +
-  geom_point() +
-  xlab("Valence") +
-  ylab("Energy")+
-  ggtitle("Valence vs Energy Janu-December/ 2018")
-
-valener_2019_m <- months_2019 %>%
-  ggplot(aes(x = valence, y = energy, fill = category)) +
-  geom_point() +
-  xlab("Valence") +
-  ylab("Energy")+
-  ggtitle("Valence vs Energy September-December/ 2019")
-
-valener_2020_m <- months_2020 %>%
-  ggplot(aes(x = valence, y = energy, fill = category)) +
-  geom_point() +
-  xlab("Valence") +
-  ylab("Energy")+
-  ggtitle("Valence vs Energy September-December/ 2020")
-
-
-valendancepopyear <- seventotwenty %>%
- ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
-
-
-
-vdp_2017_m <- months_2017 %>%
-  ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
-
-vdp_2018_m <- months_2018 %>%
-  ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
-
-vdp_2019_m <- months_2019 %>%
-  ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
-
-
-
-vdp_2020_m <- months_2020 %>%
-  ggplot(                          # Set up the plot.
-    aes(
-      x = valence,
-      y = energy,
-      size = track.popularity,
-      colour = danceability,
-      label = track.name           # Labels will be interactively visible.
-    )
-  ) +
-  geom_point() +                   # Scatter plot.
-  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
-  facet_wrap(~category) +           # Separate charts per country.
-  scale_x_continuous(              # Fine-tune the x axis.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
-    minor_breaks = NULL            # Remove 'minor' grid-lines.
-  ) +
-  scale_y_continuous(              # Fine-tune the y axis in the same way.
-    limits = c(0, 1),
-    breaks = c(0, 0.50, 1),
-    minor_breaks = NULL
-  ) +
-  scale_colour_viridis_c(          # Use the cividis palette
-    option = "A",                  # Qualitative set.
-    alpha = 0.8,                   # Include some transparency
-    guide = "none"
-  ) +
-  scale_size_continuous(           # Fine-tune the sizes of each point.
-    guide = "none"                 # Remove the legend for size.
-  ) +
-  theme_light() +                  # Use a simpler theme.
-  labs(                            # Make the titles nice.
-    x = "Valence",
-    y = "Energy"
-  ) +
-  theme(strip.background = element_rect(fill="#660066"))
-  
 ```
 
 ``` {r chromas, include = FALSE}
@@ -563,31 +123,356 @@ bind_rows(
 
 
 
+
+circshift <- function(v, n) {
+  if (n == 0) v else c(tail(v, n), head(v, -n))
+}
+#      C     C#    D     Eb    E     F     F#    G     Ab    A     Bb    B
+major_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    0,    0)
+minor_chord <-
+  c(   1,    0,    0,    1,    0,    0,    0,    1,    0,    0,    0,    0)
+seventh_chord <-
+  c(   1,    0,    0,    0,    1,    0,    0,    1,    0,    0,    1,    0)
+major_key <-
+  c(6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88)
+minor_key <-
+  c(6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17)
+chord_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:7", circshift(seventh_chord, 6),
+    "Gb:maj", circshift(major_chord, 6),
+    "Bb:min", circshift(minor_chord, 10),
+    "Db:maj", circshift(major_chord, 1),
+    "F:min", circshift(minor_chord, 5),
+    "Ab:7", circshift(seventh_chord, 8),
+    "Ab:maj", circshift(major_chord, 8),
+    "C:min", circshift(minor_chord, 0),
+    "Eb:7", circshift(seventh_chord, 3),
+    "Eb:maj", circshift(major_chord, 3),
+    "G:min", circshift(minor_chord, 7),
+    "Bb:7", circshift(seventh_chord, 10),
+    "Bb:maj", circshift(major_chord, 10),
+    "D:min", circshift(minor_chord, 2),
+    "F:7", circshift(seventh_chord, 5),
+    "F:maj", circshift(major_chord, 5),
+    "A:min", circshift(minor_chord, 9),
+    "C:7", circshift(seventh_chord, 0),
+    "C:maj", circshift(major_chord, 0),
+    "E:min", circshift(minor_chord, 4),
+    "G:7", circshift(seventh_chord, 7),
+    "G:maj", circshift(major_chord, 7),
+    "B:min", circshift(minor_chord, 11),
+    "D:7", circshift(seventh_chord, 2),
+    "D:maj", circshift(major_chord, 2),
+    "F#:min", circshift(minor_chord, 6),
+    "A:7", circshift(seventh_chord, 9),
+    "A:maj", circshift(major_chord, 9),
+    "C#:min", circshift(minor_chord, 1),
+    "E:7", circshift(seventh_chord, 4),
+    "E:maj", circshift(major_chord, 4),
+    "G#:min", circshift(minor_chord, 8),
+    "B:7", circshift(seventh_chord, 11),
+    "B:maj", circshift(major_chord, 11),
+    "D#:min", circshift(minor_chord, 3)
+  )
+key_templates <-
+  tribble(
+    ~name, ~template,
+    "Gb:maj", circshift(major_key, 6),
+    "Bb:min", circshift(minor_key, 10),
+    "Db:maj", circshift(major_key, 1),
+    "F:min", circshift(minor_key, 5),
+    "Ab:maj", circshift(major_key, 8),
+    "C:min", circshift(minor_key, 0),
+    "Eb:maj", circshift(major_key, 3),
+    "G:min", circshift(minor_key, 7),
+    "Bb:maj", circshift(major_key, 10),
+    "D:min", circshift(minor_key, 2),
+    "F:maj", circshift(major_key, 5),
+    "A:min", circshift(minor_key, 9),
+    "C:maj", circshift(major_key, 0),
+    "E:min", circshift(minor_key, 4),
+    "G:maj", circshift(major_key, 7),
+    "B:min", circshift(minor_key, 11),
+    "D:maj", circshift(major_key, 2),
+    "F#:min", circshift(minor_key, 6),
+    "A:maj", circshift(major_key, 9),
+    "C#:min", circshift(minor_key, 1),
+    "E:maj", circshift(major_key, 4),
+    "G#:min", circshift(minor_key, 8),
+    "B:maj", circshift(major_key, 11),
+    "D#:min", circshift(minor_key, 3)
+  )
+Build_God <-
+  get_tidy_audio_analysis("7MMOPTjs6nZL0wf6C9ECKX") %>%
+  compmus_align(sections, segments) %>%
+  select(sections) %>%
+  unnest(sections) %>%
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      )
+  )
+Buildplot <- Build_God %>% 
+  compmus_match_pitch_template(
+    key_templates,         
+    method = "euclidean",  
+    norm = "manhattan"     
+  ) %>%
+  ggplot(
+    aes(x = start + duration / 2, width = duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "") +
+  ggtitle("2019-2020 Build God, Then We'll Talk - Panic! At The Disco")
+
+Bohem <-
+  get_tidy_audio_analysis("1AhDOtG9vPSOmsWgNW0BEY") %>%
+  compmus_align(sections, segments) %>%
+  select(sections) %>%
+  unnest(sections) %>%
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      )
+  )
+Bohemplot <- Bohem %>% 
+  compmus_match_pitch_template(
+    key_templates,         
+    method = "euclidean",  
+    norm = "manhattan"     
+  ) %>%
+  ggplot(
+    aes(x = start + duration / 2, width = duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "") +
+  ggtitle("2018 Bohemian Rhapsody - Queen")
+
+Weight <-
+  get_tidy_audio_analysis("2UZZtkoLOg7IHxeTAdPFvd") %>%
+  compmus_align(sections, segments) %>%
+  select(sections) %>%
+  unnest(sections) %>%
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      )
+  )
+
+Wplot <- Weight %>% 
+  compmus_match_pitch_template(
+    key_templates,         
+    method = "euclidean",  
+    norm = "manhattan"     
+  ) %>%
+  ggplot(
+    aes(x = start + duration / 2, width = duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "") +
+  ggtitle("2017 Weightless part 1 - Marconi Union")
+
+Sub <-
+  get_tidy_audio_analysis("10lT3pp9QERGOWiIzLx4We") %>%
+  compmus_align(sections, segments) %>%
+  select(sections) %>%
+  unnest(sections) %>%
+  mutate(
+    pitches =
+      map(segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      )
+  )
+
+Suburplot <- Sub %>% 
+  compmus_match_pitch_template(
+    key_templates,         
+    method = "euclidean",  
+    norm = "manhattan"     
+  ) %>%
+  ggplot(
+    aes(x = start + duration / 2, width = duration, y = name, fill = d)
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c(guide = "none") +
+  theme_minimal() +
+  labs(x = "Time (s)", y = "") +
+  ggtitle("2016 Jesus of Suburbia - Green Day")
+  
+
+
 ```
 
-### Valence VS Energy (Monthly) 2017
+
+``` {r graphs, include = FALSE}
+mid <- mean(wrapped_16_20$valence)
+
+valendancepopyear <- wrapped_16_20 %>%
+ ggplot(                          # Set up the plot.
+    aes(
+      x = danceability,
+      y = energy,
+      size = 1,
+      color = valence,
+      label = track.name           # Labels will be interactively visible.
+    )
+  ) +
+  geom_point(alpha=0.7) +                   # Scatter plot.
+  geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  facet_wrap(~category) +           # Separate charts per country.
+  scale_x_continuous(              # Fine-tune the x axis.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),        # Use grid-lines for quadrants only.
+    minor_breaks = NULL            # Remove 'minor' grid-lines.
+  ) +
+  scale_y_continuous(              # Fine-tune the y axis in the same way.
+    limits = c(0, 1),
+    breaks = c(0, 0.50, 1),
+    minor_breaks = NULL
+  ) +
+  scale_color_gradient2(midpoint=mid, low="red", mid="blue", high="green", space ="Lab") +
+  #scale_colour_viridis_b(          # Use the cividis palette
+  #  option = "A",                  # Qualitative set.
+  #  alpha = 0.8,                   # Include some transparency
+  #) +
+  #scale_size_continuous(           # Fine-tune the sizes of each point.
+   # guide = "none"                 # Remove the legend for size.
+  # ) +
+  theme_tufte() +                 # Use a simpler theme.
+  labs(                            # Make the titles nice.
+    x = "Danceability",
+    y = "Energy"
+  ) 
+  #theme(strip.background = element_rect(fill="#960000"))
+
+```
+
+
+```{r hists/bars, include=FALSE}
+
+keyfreqyear <- wrapped_16_20 %>%
+ggplot(aes(x = factor(key_name), fill = category)) +
+  geom_bar() +
+  xlab("Keys") +
+  ylab("Frequency")+
+  ggtitle("Key frequency wrapped 2016-2020") +
+  theme_tufte() +
+  scale_fill_discrete(guide=FALSE) +
+  facet_wrap(~category)
+
+modefreqyear <- wrapped_16_20 %>%
+  ggplot(aes(x = factor(mode))) +
+  geom_bar() +
+  xlab("Mode (factored)") +
+  ylab("Frequency")+
+  ggtitle("Mode Spotify wrapped per year") +
+  scale_x_discrete(labels=c("0" = "Minor", "1" = "Major")) +
+  theme_tufte() +
+  facet_wrap(~category)
+
+valdens <-  wrapped_16_20 %>%
+  ggplot(aes( x = valence)) +
+   geom_histogram(aes(y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+  theme_tufte() 
+
+yearenergy <-  wrapped_16_20 %>%
+  ggplot(aes( x = energy)) +
+   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+  theme_tufte() 
+
+yearloudness <-  wrapped_16_20 %>%
+  ggplot(aes( x = loudness)) +
+   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+  theme_tufte() 
+
+
+yeardanceability <-  wrapped_16_20 %>%
+  ggplot(aes( x = danceability)) +
+   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+  theme_tufte() 
+
+yearacousticness <-  wrapped_16_20 %>%
+  ggplot(aes( x = acousticness)) +
+   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+                   binwidth=.5,
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+  theme_tufte() 
+
+yearinstrumentalness <-  wrapped_16_20 %>%
+  ggplot(aes( x = instrumentalness)) +
+  geom_histogram(binwidth=.5,colour="black", fill="white") +
+  facet_wrap(~category) +
+  theme_tufte() 
+
+```
+
+### chordograms (NEW)
+```{r echo=FALSE, message=FALSE}
+Buildplot
+Bohemplot
+Wplot
+Suburplot
+
+
+```
+***
+* (under construction)
+
+* 2020-2019
+
+* 2018
+
+* 2017
+
+* 2016
+
+
+
+### Keyp on moving (NEW)
 
 ```{r echo=FALSE, message=FALSE}
-ggplotly(vdp_2017_m)
+ggplotly(keyfreqyear)
 ```
 
-### Valence VS Energy (Monthly) 2018
+***
 
-```{r echo=FALSE, message=FALSE}
-ggplotly(vdp_2018_m)
-```
+* WIP
 
-### Valence VS Energy (Monthly) 2019
 
-```{r echo=FALSE, message=FALSE}
-ggplotly(vdp_2019_m)
-```
-
-### Valence VS Energy (Monthly) 2020
-
-```{r echo=FALSE, message=FALSE}
-ggplotly(vdp_2020_m)
-```
 
 ### Feels like summer
 
@@ -597,7 +482,7 @@ plot(FLSCHROMA)
 
 ***
 
-* Chromagram for the song i most frequently listened to.
+* Chromagram for the song i most frequently listened to. (under construction)
 
 ### Self-Similarity Matrices
 ```{r, echo = FALSE, message = FALSE}
@@ -652,76 +537,50 @@ bind_rows(
 
 ***
 
-* Chroma and Timbre self-similarity matrices for the song i most frequently listened to.
-
-
-
-
+* Chroma and Timbre self-similarity matrices for the song i most frequently listened to. At multiple segments in the song (at around 120, 300 and constantly during the outro) there is a section where most instruments fade out and come back in with Childish Gambino belting a high note, this could explain the intersections at those times in the chroma an timbre graphs. Whats interesting is that the timbre graph singles out the segment at 200 seconds. This is because not just some but all the other instruments stop for a moment as a opposed to earlier and later occurrences of a similar segment, resulting in the biggest difference in timbre.
 
 
 ### Introduction
 
 
 
-#### Corpus: my personal "This is: Sebas" playlist
+#### Spotify Wrapped 2016-2020
+Every december Spotify makes you a "wrapped" playlist of the 100 songs you most frequently listened to that year giving a clear picture of your music taste that year. I've always found that my music taste is kind of variable with a lot of different genre's so it would be interesting to see how my music taste has changed from 2016 till now. To compare my music taste from 2016 to 2020 i will analyze my Spotify wrapped 2016-2020 playlists using the following metrics: **valence, danceability, energy, tempo and modality.**
 
-In 2017 i created a playlist with the idea of adding every song i like to it through the years. Until now i have added 1095 songs to my playlist. It's also important to note that my main source of music is spotify. I've always found that my music taste is kind of variable with a lot of different genre's but i do wonder if there are similarities or patterns to be found in all the music to be able to pinpoint why i like certain music. 
+After getting a global idea i'd like to take one favorite song from each year which i will compare in more depth, using the metrics mentioned above and chroma/timbregrams to look at similarities/differences.
 
-
-#### Playlist-Wide Research
-First i would like to answer some questions about the playlist in general: 
-Is there a certain key across all songs that i like particularly?
-What is the most frequent modality?
-Is the majority of the songs in a certain bpm range? 
-How similar is the valence across the playlist?
-How high is the energy in the playlist
-
-I suspect key, bpm and modality to be evenly distributed due to all the different genres and valence and energy to be all over the place.
-
-#### Further Research
-I would like to expand on researching per year, per season and maybe even per month as i expect to see more interesting things happening in smaller time periods.
-Furthermore i'd like to involve genres as that seems like one of the most important things in music taste. Sadly there is no way to do this per track so i might try to take the genres from the albums the songs are coming from.
-
-#### Link to playlist
-https://open.spotify.com/playlist/5zSzru2LrIR0o8SUyLelyd?si=G_XxooasSYyhyixlqyRA8Q
+#### Corpus:
+My Corpus is divided into 5 groups of spotify wrapped playlists representing 2016 to 2020:
+[Wrapped 2016](https://open.spotify.com/playlist/37i9dQZF1Cz24RS3exilwM?si=ZOze5nWySsWErYrc3xVM4Q)
+[Wrapped 2017](https://open.spotify.com/playlist/37i9dQZF1E9Jzat5fcogxI?si=1ehaYOK2QXaN7Zj5addPPw)
+[Wrapped 2018](https://open.spotify.com/playlist/37i9dQZF1EjvCrCRRFYOR7?si=Yr8yJlFfTmCiSsGq3JJtWQ)
+[Wrapped 2019](https://open.spotify.com/playlist/37i9dQZF1Etlshd0CHSHbz?si=WTbkaVjySZizef_MzektQA)
+[Wrapped 2020](https://open.spotify.com/playlist/37i9dQZF1EMdGOBLndfzlm?si=yB3xeK53Trqhc_xIE69a3A)
 
 
 
-### Keys
+
+### Because I'm Happy...?
 
 ```{r echo=FALSE, message=FALSE}
-ggplotly(keyfreqyear)
+ggplotly(valdens)
+
 ```
 
 ***
 
-* As you can see the key frequency over the whole playlist is distributed fairly even, however C# and G seem to be the most common with over a hundred songs each and D# the least with only 22 songs. So i conclude that either i really like C# and G and dislike D# or these are just very popular/unpopular keys in music. 
+* WIP
 
-### Modality
-
-```{r echo=FALSE, message=FALSE}
-ggplotly(modefreqyear) 
-```
-
-***
-
-* As you can see i seem to prefer songs with a major modality this also reflects in the "per year" category.
-
-### Valence
-
-```{r echo=FALSE, message=FALSE}
-ggplotly(valeneryear) 
-```
-
-***
-
-* As expected the valence and energy are all over the place.
-
-### Valence VS Energy (Yearly) 2017-2020
-
+### Multi
 ```{r echo=FALSE, message=FALSE}
 ggplotly(valendancepopyear)
 
 ```
+
+
+***
+
+* WIP
+
 
 
