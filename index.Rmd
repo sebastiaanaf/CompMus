@@ -7,7 +7,7 @@ output:
     theme: journal
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE, message=FALSE}
 knitr::opts_chunk$set(message = FALSE, echo = FALSE)
 
 library(tidyverse)
@@ -20,7 +20,7 @@ library(ggplot2)
 library(plotly)
 library(compmus)
 library(ggthemes)
-library(wesanderson)
+library(patchwork)
 sebas <- get_playlist_audio_features("", "5zSzru2LrIR0o8SUyLelyd")
 
 sebas <- sebas %>%
@@ -34,7 +34,7 @@ wrapped20 <- get_playlist_audio_features("", "37i9dQZF1EMdGOBLndfzlm")
 
 ```
 
-```{r prepro wrapped}
+```{r prepro wrapped, include=FALSE, echo=FALSE, message=FALSE}
 wrapped_16_20 <-
   bind_rows(
     wrapped16 %>% mutate(category = "2016"),
@@ -45,7 +45,7 @@ wrapped_16_20 <-
   )
 ```
 
-``` {r chromas, include = FALSE}
+``` {r chromas, include = FALSE, echo=FALSE, message=FALSE}
 FLS <-
   get_tidy_audio_analysis("7p4vHnYXkxlzvfePJVpcTr") %>% 
   select(segments) %>%
@@ -66,16 +66,9 @@ FLSCHROMA <- FLS %>%
   ) +
   geom_tile() +
   labs(x = "Time (s)", y = NULL, fill = "Magnitude") +
-  theme_minimal() +
-  scale_fill_viridis_c(option="magma") +
-  ggtitle("Feels Like Summer - Childish Gambino") +
-  theme_update(plot.title = element_text(hjust = 0.5)) +
-  theme(
-    text = element_text(family = "Bookman"),
-    title = element_text(color = "gray25"),
-    plot.caption = element_text(color = "gray30"),
-    plot.subtitle = element_text(size = 12)
-  )
+  scale_fill_viridis_c(option="inferno") +
+  theme_classic() +
+  ggtitle("Feels Like Summer - Childish Gambino") 
 
 FLS2 <-
   get_tidy_audio_analysis("7p4vHnYXkxlzvfePJVpcTr") %>%
@@ -228,9 +221,9 @@ Buildplot <- Build_God %>%
   ) +
   geom_tile() +
   scale_fill_viridis_c(guide = "none",option = "inferno")  +
-  theme_minimal() +
   labs(x = "Time (s)", y = "") +
-  ggtitle("2019-2020 Build God, Then We'll Talk - Panic! At The Disco")
+  theme_classic() +
+  ggtitle("2019-2020 ")
 
 Bohem <-
   get_tidy_audio_analysis("1AhDOtG9vPSOmsWgNW0BEY") %>%
@@ -256,9 +249,9 @@ Bohemplot <- Bohem %>%
   ) +
   geom_tile() +
   scale_fill_viridis_c(guide = "none",option = "inferno")  +
-  theme_minimal() +
   labs(x = "Time (s)", y = "") +
-  ggtitle("2018 Bohemian Rhapsody - Queen")
+  theme_classic() +
+  ggtitle("2018")
 
 Weight <-
   get_tidy_audio_analysis("2UZZtkoLOg7IHxeTAdPFvd") %>%
@@ -284,9 +277,9 @@ Wplot <- Weight %>%
   ) +
   geom_tile() +
   scale_fill_viridis_c(guide = "none",option = "inferno")  +
-  theme_minimal() +
   labs(x = "Time (s)", y = "") +
-  ggtitle("2017 Weightless part 1 - Marconi Union")
+  theme_classic() +
+  ggtitle("2017")
 
 Sub <-
   get_tidy_audio_analysis("10lT3pp9QERGOWiIzLx4We") %>%
@@ -312,11 +305,53 @@ Suburplot <- Sub %>%
   ) +
   geom_tile() +
   scale_fill_viridis_c(guide = "none",option = "inferno") +
-  theme_minimal() +
   labs(x = "Time (s)", y = "") +
-  ggtitle("2016 Jesus of Suburbia - Green Day")
-  
+  theme_classic() +
+  ggtitle("2016")
 
+```
+
+```{r tempograms, include = FALSE, echo=FALSE, message=FALSE}
+build_temp <- get_tidy_audio_analysis("7MMOPTjs6nZL0wf6C9ECKX")
+sub_temp <- get_tidy_audio_analysis("10lT3pp9QERGOWiIzLx4We")
+bohem_temp <- get_tidy_audio_analysis("1AhDOtG9vPSOmsWgNW0BEY")
+weight_temp <- get_tidy_audio_analysis("2UZZtkoLOg7IHxeTAdPFvd")
+  
+tempbuild <- build_temp %>%
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>%
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  ggtitle("2019-2020") +
+  theme_classic()
+
+tempsub <- sub_temp %>%
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>%
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  ggtitle("2016") +
+  theme_classic()
+
+tempweight <- weight_temp %>%
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>%
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  ggtitle("2017") +
+  theme_classic()
+
+tempbohem <- bohem_temp %>%
+  tempogram(window_size = 8, hop_size = 1, cyclic = FALSE) %>%
+  ggplot(aes(x = time, y = bpm, fill = power)) +
+  geom_raster() +
+  scale_fill_viridis_c(guide = "none", option = "inferno") +
+  labs(x = "Time (s)", y = "Tempo (BPM)") +
+  ggtitle("2018") +
+  theme_classic()
 
 ```
 
@@ -439,32 +474,82 @@ yearinstrumentalness <-  wrapped_16_20 %>%
   facet_wrap(~category) +
   theme_tufte() 
 
+histtempo <-  wrapped_16_20 %>%
+  ggplot(aes( x = tempo)) +
+   geom_histogram(aes( y=..density..),      # Histogram with density instead of count on y-axis
+                   colour="black", fill="white") +
+    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+  facet_wrap(~category) +
+   labs(x = "Tempo (BPM)", y = "Density")
+  theme_tufte() 
+
+
 ```
 
-### chordograms (NEW)
+### Time (Tempo histogram with density) (NEW)
 
 ```{r echo=FALSE, message=FALSE}
-Buildplot
-Bohemplot
-Wplot
-Suburplot
+ggplotly(histtempo)
 ```
 
 ***
 
-* (under construction)
-
-* 2020-2019
-
-* 2018
-
-* 2017
-
-* 2016
+* The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.
 
 
+### And Time again (Tempograms for Outliers) (NEW)
 
-### Keyp on moving (NEW)
+```{r echo=FALSE, message=FALSE}
+tempsub +
+tempweight +
+tempbohem +
+tempbuild  +
+plot_layout(ncol = 2)
+```
+
+*** 
+
+* Outliers:
+
+* 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes.
+
+* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something you would listen to on the regular.
+
+* 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes.
+
+* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections and tempo changes.
+
+
+
+### Acchordingly (Chordograms for Outliers) 
+
+```{r echo=FALSE, message=FALSE}
+Suburplot + 
+Wplot +
+Bohemplot +
+Buildplot +
+plot_layout(ncol = 2)
+```
+
+***
+
+* Outliers:
+
+* 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes.
+
+* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something you would listen to on the regular.
+
+* 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes.
+
+* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections and tempo changes.
+
+
+
+
+
+
+
+### Keyp on moving (Key frequency) 
 
 ```{r echo=FALSE, message=FALSE}
 ggplotly(keyfreqyear)
@@ -476,7 +561,7 @@ ggplotly(keyfreqyear)
 
 
 
-### Feels like summer
+### Feels like summer (Chromagram)
 
 ```{r echo=FALSE, message=FALSE}
 plot(FLSCHROMA)
@@ -487,6 +572,7 @@ plot(FLSCHROMA)
 * Chromagram for the song i most frequently listened to. (under construction)
 
 ### Self-Similarity Matrices
+
 ```{r, echo = FALSE, message = FALSE}
 library(tidyverse)
 library(spotifyr)
@@ -532,7 +618,7 @@ bind_rows(
   geom_tile() +
   coord_fixed() +
   facet_wrap(~type) +
-  scale_fill_viridis_c(guide = "none") +
+  scale_fill_viridis_c(guide = "none",option = "inferno") +
   theme_classic() +
   labs(x = "", y = "")
 ```
@@ -568,7 +654,7 @@ My Corpus is divided into 5 groups of spotify wrapped playlists representing 201
 
 
 
-### Because I'm Happy...?
+### Because I'm Happy...? (Valence density plot)
 
 ```{r echo=FALSE, message=FALSE}
 ggplotly(valdens)
@@ -577,10 +663,10 @@ ggplotly(valdens)
 
 ***
 
-* You can clearly see that most of favorite songs in 2016, 2017 and 2018 were "happier" than my most favorite songs in 2019 and 2020. Although 2019 has some outliers with music is used for sleeping which all have a really low valence score.
+* You can clearly see that most of my favorite songs in 2016, 2017 and 2018 were "happier" than my most favorite songs in 2019 and 2020. Although 2019 has some outliers with music used for sleeping which all have a really low valence score.
 
 
-### Multivariate Musicology
+### Multivariate Musicology (Valence, energy, danceability)
 
 ```{r echo=FALSE, message=FALSE}
 ggplotly(valendancepopyear)
