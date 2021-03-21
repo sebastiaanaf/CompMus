@@ -21,27 +21,64 @@ library(plotly)
 library(compmus)
 library(ggthemes)
 library(patchwork)
+library(ggdendro)
+library(heatmaply)
+library(tidymodels)
 sebas <- get_playlist_audio_features("", "5zSzru2LrIR0o8SUyLelyd")
 
 sebas <- sebas %>%
   filter(!is.na(key))
 
-wrapped16 <- get_playlist_audio_features("", "37i9dQZF1Cz24RS3exilwM")
-wrapped17 <- get_playlist_audio_features("", "37i9dQZF1E9Jzat5fcogxI")
-wrapped18 <- get_playlist_audio_features("", "37i9dQZF1EjvCrCRRFYOR7")
-wrapped19 <- get_playlist_audio_features("", "37i9dQZF1Etlshd0CHSHbz")
-wrapped20 <- get_playlist_audio_features("", "37i9dQZF1EMdGOBLndfzlm")
+wrapped16 <- get_playlist_audio_features("", "37i9dQZF1Cz24RS3exilwM") %>% filter(!is.na(key))
+wrapped17 <- get_playlist_audio_features("", "37i9dQZF1E9Jzat5fcogxI") %>% filter(!is.na(key))
+wrapped18 <- get_playlist_audio_features("", "37i9dQZF1EjvCrCRRFYOR7") %>% filter(!is.na(key))
+wrapped19 <- get_playlist_audio_features("", "37i9dQZF1Etlshd0CHSHbz") %>% filter(!is.na(key))
+wrapped20 <- get_playlist_audio_features("", "37i9dQZF1EMdGOBLndfzlm") %>% filter(!is.na(key))
+
+get_conf_mat <- function(fit) {
+  outcome <- .get_tune_outcome_names(fit)
+  fit %>% 
+    collect_predictions() %>% 
+    conf_mat(truth = outcome, estimate = .pred_class)
+}  
+
+get_pr <- function(fit) {
+  fit %>% 
+    conf_mat_resampled() %>% 
+    group_by(Prediction) %>% mutate(precision = Freq / sum(Freq)) %>% 
+    group_by(Truth) %>% mutate(recall = Freq / sum(Freq)) %>% 
+    ungroup() %>% filter(Prediction == Truth) %>% 
+    select(class = Prediction, precision, recall)
+}  
 
 ```
 
 ```{r prepro wrapped, include=FALSE, echo=FALSE, message=FALSE}
 wrapped_16_20 <-
   bind_rows(
-    wrapped16 %>% mutate(category = "2016"),
-    wrapped17 %>% mutate(category = "2017"),
-    wrapped18 %>% mutate(category = "2018"),
-    wrapped19 %>% mutate(category = "2019"),
-    wrapped20 %>% mutate(category = "2020")
+    wrapped16 %>% mutate(category = "2016", playlist = 'wrapped 2016'),
+    wrapped17 %>% mutate(category = "2017", playlist = 'wrapped 2017'),
+    wrapped18 %>% mutate(category = "2018", playlist = 'wrapped 2018'),
+    wrapped19 %>% mutate(category = "2019", playlist = 'wrapped 2019'),
+    wrapped20 %>% mutate(category = "2020", playlist = 'wrapped 2020')
+  )
+
+wrapped_16_20less <-
+  bind_rows(
+    wrapped16 %>% mutate( playlist = 'wrapped 2016') %>% slice_head(n = 25),
+    wrapped17 %>% mutate( playlist = 'wrapped 2017') %>% slice_head(n = 25),
+    wrapped18 %>% mutate( playlist = 'wrapped 2018') %>% slice_head(n = 25),
+    #wrapped19 %>% mutate( playlist = 'wrapped 2019') %>% slice_head(n = 10),
+    wrapped20 %>% mutate( playlist = 'wrapped 2020') %>% slice_head(n = 25)
+  )
+
+wrapped_16_20class <-
+  bind_rows(
+    wrapped16 %>% mutate( playlist = 'wrapped 2016')  ,
+    wrapped17 %>% mutate( playlist = 'wrapped 2017')  ,
+    wrapped18 %>% mutate( playlist = 'wrapped 2018')  ,
+    #wrapped19 %>% mutate( playlist = 'wrapped 2019')  ,
+    wrapped20 %>% mutate( playlist = 'wrapped 2020') 
   )
 ```
 
@@ -356,7 +393,7 @@ tempbohem <- bohem_temp %>%
 ```
 
 
-``` {r graphs, include = FALSE}
+``` {r graphs, include = FALSE, echo=FALSE, message=FALSE}
 mid <- mean(wrapped_16_20$valence)
 
 valendancepopyear <- wrapped_16_20 %>%
@@ -400,7 +437,7 @@ valendancepopyear <- wrapped_16_20 %>%
 ```
 
 
-```{r hists/bars, include=FALSE}
+```{r hists/bars, include=FALSE, echo=FALSE, message=FALSE}
 
 keyfreqyear <- wrapped_16_20 %>%
 ggplot(aes(x = factor(key_name), fill = mode_name)) +
@@ -486,7 +523,165 @@ histtempo <-  wrapped_16_20 %>%
 
 ```
 
-### Time (Tempo histogram with density) (NEW)
+```{r class prepro, include=FALSE, echo=FALSE, message=FALSE}
+
+
+
+
+wrapped_features <-
+ wrapped_16_20class %>%  # For your portfolio, change this to the name of your corpus.
+  add_audio_analysis() %>% 
+  mutate(
+    playlist = factor(playlist),
+    segments = map2(segments, key, compmus_c_transpose),
+    pitches =
+      map(
+        segments,
+        compmus_summarise, pitches,
+        method = "mean", norm = "manhattan"
+      ),
+    timbre =
+      map(
+        segments,
+        compmus_summarise, timbre,
+        method = "mean",
+      )
+  ) %>%
+  mutate(pitches = map(pitches, compmus_normalise, "clr")) %>%
+  mutate_at(vars(pitches, timbre), map, bind_rows) %>%
+  unnest(cols = c(pitches, timbre))
+
+
+
+# prepro
+
+wrappedcipe <-
+  recipe(
+    playlist ~
+      danceability +
+      energy +
+      loudness +
+      speechiness +
+      acousticness +
+      instrumentalness +
+      liveness +
+      valence +
+      tempo +
+      duration +
+      C + `C#|Db` + D + `D#|Eb` +
+      E + `F` + `F#|Gb` + G +
+      `G#|Ab` + A + `A#|Bb` + B +
+      c01 + c02 + c03 + c04 + c05 + c06 +
+      c07 + c08 + c09 + c10 + c11 + c12,
+    data = wrapped_features,          # Use the same name as the previous block.
+  ) %>%
+  step_center(all_predictors()) %>%
+  step_scale(all_predictors())      # Converts to z-scores.
+  # step_range(all_predictors())    # Sets range to [0, 1].
+
+
+
+```
+
+```{r class, include=FALSE, echo=FALSE, message=FALSE}
+wrapped_cv <- wrapped_features %>% vfold_cv(5)
+
+knn_model <-
+  nearest_neighbor(neighbors = 1) %>%
+  set_mode("classification") %>% 
+  set_engine("kknn")
+wrapped_knn <- 
+  workflow() %>% 
+  add_recipe(wrappedcipe) %>% 
+  add_model(knn_model) %>% 
+  fit_resamples(
+    wrapped_cv, 
+    control = control_resamples(save_pred = TRUE)
+  )
+```
+
+```{r trees, include=FALSE, echo=FALSE, message=FALSE} 
+
+tree_model <-
+  decision_tree() %>%
+  set_mode("classification") %>% 
+  set_engine("C5.0")
+wrapped_tree <- 
+  workflow() %>% 
+  add_recipe(wrappedcipe) %>% 
+  add_model(tree_model) %>% 
+  fit_resamples(
+    wrapped_cv, 
+    control = control_resamples(save_pred = TRUE)
+  )
+```
+
+```{r forest, include=FALSE, echo=FALSE, message=FALSE} 
+
+forest_model <-
+  rand_forest() %>%
+  set_mode("classification") %>% 
+  set_engine("ranger", importance = "impurity")
+wrapped_forest <- 
+  workflow() %>% 
+  add_recipe(wrappedcipe) %>% 
+  add_model(forest_model) %>% 
+  fit_resamples(
+    wrapped_cv, 
+    control = control_resamples(save_pred = TRUE)
+  )
+```
+
+
+### Classfication (NEW)
+
+#### K-Nearest Neighbours classifier
+
+```{r KNN, echo=FALSE, message=FALSE}
+wrapped_knn %>% get_conf_mat() %>% 
+  autoplot(type = "heatmap") +
+  labs(subtitle = "Confusion matrix heatmap for all features") +
+  scale_fill_viridis_c( guide = "none", option = "E")
+  
+wrapped_knn %>% get_pr()
+```
+
+***
+
+* KNN classification over 4 of the 5 lists from my Spotify wrapped 2016-2020 corpus, (2019 excluded due to errors) 
+
+#### Decision Tree Classifier
+
+```{r dtree, echo=FALSE, message=FALSE}
+wrapped_tree %>% get_conf_mat() %>% 
+  autoplot(type = "heatmap") +
+  labs(subtitle = "Confusion matrix heatmap for all features") +
+  scale_fill_viridis_c( guide = "none", option = "E")
+wrapped_tree %>% get_pr()
+```
+
+***
+
+* Decision tree classification over 4 of the 5 lists from my Spotify wrapped 2016-2020 corpus, (2019 excluded due to errors) 
+
+#### Random Forest Classifier
+
+```{r rforest, echo=FALSE, message=FALSE}
+
+wrapped_forest %>% get_conf_mat() %>%
+  autoplot(type = "heatmap") +
+  labs(subtitle = "Confusion matrix heatmap for all features") +
+  scale_fill_viridis_c(guide = "none", option = "E")
+wrapped_forest %>% get_pr()
+```
+
+***
+
+* Random forest classification over 4 of the 5 lists from my Spotify wrapped 2016-2020 corpus (2019 excluded due to errors) 
+
+
+
+### Time (Tempo histogram with density) 
 
 ```{r echo=FALSE, message=FALSE}
 ggplotly(histtempo)
@@ -497,7 +692,7 @@ ggplotly(histtempo)
 * The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.
 
 
-### And Time again (Tempograms for Outliers) (NEW)
+### And Time again (Tempograms for Outliers)
 
 ```{r echo=FALSE, message=FALSE}
 tempsub +
