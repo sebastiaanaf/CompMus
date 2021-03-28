@@ -797,7 +797,7 @@ ggplotly(histtempo)
 * The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM this seems to conform to Moelants(2002) which suggests that humans prefer tempi around 120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.  
 
 
-### And Time again (Tempograms for Favorites/Outliers)
+### And Time again (**Tempograms** for Favorites/Outliers) {data-commentary-width=600}
 
 #### Tempograms
 ```{r echo=FALSE, message=FALSE}
@@ -808,23 +808,21 @@ knitr::include_graphics("tempograms.png")
 
 *** 
 
-<iframe src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="582" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80"></embed>
+</object>
 
-<!-- <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80"></embed> -->
-<!-- </object> -->
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80"></embed>
+</object>
 
-<!-- <object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80"></embed> -->
-<!-- </object> -->
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80"></embed>
+</object>
 
-<!-- <object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80"></embed> -->
-<!-- </object> -->
-
-<!-- <object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80"></embed> -->
-<!-- </object> -->
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80"></embed>
+</object>
 
 <!-- * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147. -->
 
