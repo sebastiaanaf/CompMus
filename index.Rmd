@@ -797,50 +797,6 @@ ggplotly(valendancepopyear)
 
 * As mentioned in the previous tab you can see the music used for sleeping in the 2019 plot at the bottom left it has a clear low score on just about every variable.
 
-### Wrapped Classification (KNN, Random Forests)
-
-
-```{r KNN, echo=FALSE, message=FALSE}
-# knn <- wrapped_knn %>% get_conf_mat() %>% 
-#   autoplot(type = "heatmap") +
-#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
-#   scale_fill_viridis_c( guide = "none", option = "E")
-#   
-# 
-# 
-# # knn_feat
-# 
-# forest <- wrapped_forest %>% get_conf_mat() %>%
-#   autoplot(type = "heatmap") +
-#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
-#   scale_fill_viridis_c(guide = "none", option = "E")
-# 
-
-# knn +
-# forest +
-# plot_layout(ncol = 2)
-knitr::include_graphics("heatmaps.png")
-
-
-knn_stat <- matrix(c(0.2566372, 0.2871287, 0.3258427, 0.2900000, 0.2427184, 0.2500000, 0.3541667,	0.3400000), ncol=2, byrow=TRUE)
-colnames(knn_stat) <- c("Precision","Recall")
-rownames(knn_stat) <- c("2016","2017","2018","2020")
-
-forest_stat <- matrix(c(0.2718447,	0.2772277, 0.3723404,	0.3500000, 0.2282609,	0.2100000, 0.4464286, 0.5000000), ncol=2, byrow=TRUE)
-colnames(forest_stat) <- c("Precision","Recall")
-rownames(forest_stat) <- c("2016","2017","2018","2020")
-
-grid.arrange(gtable_combine(tableGrob(knn_stat),tableGrob(forest_stat)))
-
-knitr::include_graphics("features.png")
-```
-
-***
-
-* 2019 was excluded due to errors.
-
-* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. Another weird thing worth noting is the correlation between 2016 and 2018 for both classfiers. The classifiers keep labeling 2016 as 2018 and vice versa,
-
 
 ### Time (Tempo histogram with density) 
 
@@ -854,25 +810,6 @@ ggplotly(histtempo)
 
 
 ### And Time again (Tempograms for Favorites/Outliers)
-
-#### Sample per song
-```{=html}
-<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
-</object>
-```
 
 #### Tempograms
 ```{r echo=FALSE, message=FALSE}
@@ -892,6 +829,25 @@ knitr::include_graphics("tempograms.png")
 * 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes. You can clearly see the segment change where the staccato piano comes in and the tempo changes at around 180 seconds in and when the guitars solo's start at around 250 seconds in. Just as for every tempogram the tempo seems way off with the song having an average bpm of 72, while the tempogram shows 2 lines one at around 100-110 bpm and one at around 300 bpm possibly indicating that spotify has trouble identifying the tempo of songs that have these kinds of tempo changes.
 
 * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124.
+
+#### Sample per song
+```{=html}
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed>
+</object>
+  
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed>
+</object>
+  
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed>
+</object>
+  
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
+</object>
+```
 
 
 
@@ -1001,5 +957,49 @@ bind_rows(
 
 * Chroma and Timbre self-similarity matrices for the song i most frequently listened to. At multiple segments in the song (at around 120, 300 and constantly during the outro) there is a section where most instruments fade out and come back in with Childish Gambino belting a high note, this could explain the intersections at those times in the chroma an timbre graphs. Whats interesting is that the timbre graph singles out the segment at 200 seconds. This is because not just some but all the other instruments stop for a moment as a opposed to earlier and later occurrences of a similar segment, resulting in the biggest difference in timbre.
 
+
+### Wrapped Classification (KNN, Random Forests)
+
+
+```{r KNN, echo=FALSE, message=FALSE}
+# knn <- wrapped_knn %>% get_conf_mat() %>% 
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
+#   scale_fill_viridis_c( guide = "none", option = "E")
+#   
+# 
+# 
+# # knn_feat
+# 
+# forest <- wrapped_forest %>% get_conf_mat() %>%
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
+#   scale_fill_viridis_c(guide = "none", option = "E")
+# 
+
+# knn +
+# forest +
+# plot_layout(ncol = 2)
+knitr::include_graphics("heatmaps.png")
+
+
+knn_stat <- matrix(c(0.2566372, 0.2871287, 0.3258427, 0.2900000, 0.2427184, 0.2500000, 0.3541667,	0.3400000), ncol=2, byrow=TRUE)
+colnames(knn_stat) <- c("Precision","Recall")
+rownames(knn_stat) <- c("2016","2017","2018","2020")
+
+forest_stat <- matrix(c(0.2718447,	0.2772277, 0.3723404,	0.3500000, 0.2282609,	0.2100000, 0.4464286, 0.5000000), ncol=2, byrow=TRUE)
+colnames(forest_stat) <- c("Precision","Recall")
+rownames(forest_stat) <- c("2016","2017","2018","2020")
+
+grid.arrange(gtable_combine(tableGrob(knn_stat),tableGrob(forest_stat)))
+
+knitr::include_graphics("features.png")
+```
+
+***
+
+* 2019 was excluded due to errors.
+
+* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. Another weird thing worth noting is the correlation between 2016 and 2018 for both classfiers. The classifiers keep labeling 2016 as 2018 and vice versa,
 
 
