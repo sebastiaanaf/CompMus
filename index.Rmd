@@ -744,20 +744,20 @@ In addition i'd like to analyze my most frequently listened song and one favorit
 #### Favorite/Outlier Samples:
 
 ```{=html}
-<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="25%" height="80">
-    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="25%" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="24%" height="80">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="24%" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="25%" height="80">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="25%" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="24%" height="80">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="24%" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="25%" height="80">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="25%" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="24%" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="24%" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="25%" height="80">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="25%" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="24%" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="24%" height="80"></embed>
 </object>
 ```
 
