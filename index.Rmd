@@ -497,12 +497,13 @@ valendancepopyear <- wrapped_16_20 %>%
 
 ```{r hists/bars, include=FALSE, echo=FALSE, message=FALSE}
 
+# vir <- c("#b8627dff","#403891ff")
 keyfreqyear <- wrapped_16_20 %>%
 ggplot(aes(x = factor(key_name), fill = mode_name)) +
   geom_bar() +
   xlab("Keys") +
   ylab("Frequency")+
-  ggtitle("Key frequency wrapped 2016-2020") +
+  ggtitle("Key Frequency Wrapped 2016-2020") +
   theme_tufte() +
   scale_fill_discrete(guide=FALSE) +
   facet_wrap(~category)
@@ -521,10 +522,9 @@ valdens <-  wrapped_16_20 %>%
   ggplot(aes( x = valence)) +
    geom_histogram(aes(y=..density..),      # Histogram with density instead of count on y-axis
                    binwidth=.5,
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+ colour="black",fill="#b8627dff") +
+    geom_density( alpha=.5, fill="#403891ff")  + # Overlay with transparent density plot
   facet_wrap(~category) +
-  scale_color_viridis_c(option="inferno") +
   theme_tufte()
 
 # yearenergy <-  wrapped_16_20 %>%
@@ -573,11 +573,10 @@ valdens <-  wrapped_16_20 %>%
 histtempo <-  wrapped_16_20 %>%
   ggplot(aes( x = tempo)) +
    geom_histogram(aes( y=..density..),      # Histogram with density instead of count on y-axis
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+                   colour="black", fill="#b8627dff") +
+    geom_density( alpha=.5, fill="#403891ff")  + # Overlay with transparent density plot
   facet_wrap(~category) +
    labs(x = "Tempo (BPM)", y = "Density") +
-  scale_color_viridis_c(option="inferno") +
   theme_tufte()
 
 
@@ -740,7 +739,11 @@ histtempo <-  wrapped_16_20 %>%
 #### Spotify Wrapped 2016-2020
 Every december Spotify makes you a "wrapped" playlist of the 100 songs you most frequently listened to that year giving a clear picture of your music taste that year. I've always found that my music taste is kind of variable with a lot of different genre's so it would be interesting to see how my music taste has changed from 2016 till now. To compare my music taste from 2016 to 2020 i will analyze my Spotify wrapped 2016-2020 playlists using the following metrics: **valence, danceability, energy, tempo, key** and **modality.**
 
-After getting a global idea i'd like to take one favorite song from each year which i will compare in more depth, using the metrics mentioned above and chroma/timbregrams to look at similarities/differences. (WIP)
+I would like to answer the following questions concerning my music taste:
+- Have i started listening to happier music between 2016-2020?
+- 
+
+In addition i'd like to analyse and compare one favorite song or outlier per year with the use of chromagrams, timbregrams, and tempograms.
 
 #### Corpus:
 
@@ -756,7 +759,25 @@ My Corpus is divided into 5 groups of spotify wrapped playlists representing 201
 
 [Wrapped 2020](https://open.spotify.com/playlist/37i9dQZF1EMdGOBLndfzlm?si=yB3xeK53Trqhc_xIE69a3A)
 
+#### Favorite/Outlier Samples:
 
+```{=html}
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80"></embed>
+</object>
+```
 
 
 ### Because I'm Happy...? (Valence density plot)
@@ -797,9 +818,10 @@ ggplotly(histtempo)
 * The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM this seems to conform to Moelants(2002) which suggests that humans prefer tempi around 120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.  
 
 
-### And Time again (**Tempograms** for Favorites/Outliers) {data-commentary-width=600}
+### And Time again (**Tempograms** for Favorites/Outliers) 
 
 #### Tempograms
+
 ```{r echo=FALSE, message=FALSE}
 
 knitr::include_graphics("tempograms.png")
@@ -808,49 +830,13 @@ knitr::include_graphics("tempograms.png")
 
 *** 
 
-<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80">
-    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80"></embed>
-</object>
+* 2016 Jesus of Suburbia - Green Day: a favorite because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147.
 
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80"></embed>
-</object>
+* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something i would listen to on the regular. As expected Spotify can't really figure out the tempo as this song is just atmospheric sounds without a distinct way to measure tempo.
 
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80"></embed>
-</object>
+* 2018 Bohemian Rhapsody - Queen: a favorite because it has different sections and tempo changes. You can clearly see the segment change where the staccato piano comes in and the tempo changes at around 180 seconds in and when the guitars solo's start at around 250 seconds in. Just as for every tempogram the tempo seems way off with the song having an average bpm of 72, while the tempogram shows 2 lines one at around 100-110 bpm and one at around 300 bpm possibly indicating that spotify has trouble identifying the tempo of songs that have these kinds of tempo changes.
 
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80"></embed>
-</object>
-
-<!-- * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147. -->
-
-
-<!-- * 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something i would listen to on the regular. As expected spotfity can't really figure out the tempo as this song is just atmospheric sounds without a distinct way to measure tempo. -->
-
-<!-- * 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes. You can clearly see the segment change where the staccato piano comes in and the tempo changes at around 180 seconds in and when the guitars solo's start at around 250 seconds in. Just as for every tempogram the tempo seems way off with the song having an average bpm of 72, while the tempogram shows 2 lines one at around 100-110 bpm and one at around 300 bpm possibly indicating that spotify has trouble identifying the tempo of songs that have these kinds of tempo changes. -->
-
-<!-- * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124. -->
-
-<!-- ```{=html} -->
-<!-- <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed> -->
-<!-- </object> -->
-
-<!-- <object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed> -->
-<!-- </object> -->
-
-<!-- <object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed> -->
-<!-- </object> -->
-
-<!-- <object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"> -->
-<!--     <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed> -->
-<!-- </object> -->
-<!-- ``` -->
-
+* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: a favorite because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124.
 
 
 ### Acchordingly (Chordograms for Favorites/Outliers) 
