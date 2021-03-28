@@ -581,153 +581,153 @@ histtempo <-  wrapped_16_20 %>%
 
 ```
 
-```{r class prepro, include=FALSE, echo=FALSE, message=FALSE}
+<!-- ```{r class prepro, include=FALSE, echo=FALSE, message=FALSE} -->
 
 
 
 
-wrapped_features <-
- wrapped_16_20class %>%  # For your portfolio, change this to the name of your corpus.
-  add_audio_analysis() %>%
-  mutate(
-    playlist = factor(playlist),
-    segments = map2(segments, key, compmus_c_transpose),
-    pitches =
-      map(
-        segments,
-        compmus_summarise, pitches,
-        method = "mean", norm = "manhattan"
-      ),
-    timbre =
-      map(
-        segments,
-        compmus_summarise, timbre,
-        method = "mean",
-      )
-  ) %>%
-  mutate(pitches = map(pitches, compmus_normalise, "clr")) %>%
-  mutate_at(vars(pitches, timbre), map, bind_rows) %>%
-  unnest(cols = c(pitches, timbre))
+<!-- wrapped_features <- -->
+<!--  wrapped_16_20class %>%  # For your portfolio, change this to the name of your corpus. -->
+<!--   add_audio_analysis() %>% -->
+<!--   mutate( -->
+<!--     playlist = factor(playlist), -->
+<!--     segments = map2(segments, key, compmus_c_transpose), -->
+<!--     pitches = -->
+<!--       map( -->
+<!--         segments, -->
+<!--         compmus_summarise, pitches, -->
+<!--         method = "mean", norm = "manhattan" -->
+<!--       ), -->
+<!--     timbre = -->
+<!--       map( -->
+<!--         segments, -->
+<!--         compmus_summarise, timbre, -->
+<!--         method = "mean", -->
+<!--       ) -->
+<!--   ) %>% -->
+<!--   mutate(pitches = map(pitches, compmus_normalise, "clr")) %>% -->
+<!--   mutate_at(vars(pitches, timbre), map, bind_rows) %>% -->
+<!--   unnest(cols = c(pitches, timbre)) -->
 
 
 
-# prepro
+<!-- # prepro -->
 
-wrappedcipe <-
-  recipe(
-    playlist ~
-      danceability +
-      energy +
-      loudness +
-      speechiness +
-      acousticness +
-      instrumentalness +
-      liveness +
-      valence +
-      tempo +
-      duration +
-      C + `C#|Db` + D + `D#|Eb` +
-      E + `F` + `F#|Gb` + G +
-      `G#|Ab` + A + `A#|Bb` + B +
-      c01 + c02 + c03 + c04 + c05 + c06 +
-      c07 + c08 + c09 + c10 + c11 + c12,
-    data = wrapped_features,          # Use the same name as the previous block.
-  ) %>%
-  step_center(all_predictors()) %>%
-  step_scale(all_predictors())      # Converts to z-scores.
-  # step_range(all_predictors())    # Sets range to [0, 1].
-
-
-
-
-```
-
-
-```{r class, include=FALSE, echo=FALSE, message=FALSE}
-wrapped_cv <- wrapped_features %>% vfold_cv(5)
-
-knn_model <-
-  nearest_neighbor(neighbors = 1) %>%
-  set_mode("classification") %>%
-  set_engine("kknn")
-wrapped_knn <-
-  workflow() %>%
-  add_recipe(wrappedcipe) %>%
-  add_model(knn_model) %>%
-  fit_resamples(
-    wrapped_cv,
-    control = control_resamples(save_pred = TRUE)
-    )
-```
+<!-- wrappedcipe <- -->
+<!--   recipe( -->
+<!--     playlist ~ -->
+<!--       danceability + -->
+<!--       energy + -->
+<!--       loudness + -->
+<!--       speechiness + -->
+<!--       acousticness + -->
+<!--       instrumentalness + -->
+<!--       liveness + -->
+<!--       valence + -->
+<!--       tempo + -->
+<!--       duration + -->
+<!--       C + `C#|Db` + D + `D#|Eb` + -->
+<!--       E + `F` + `F#|Gb` + G + -->
+<!--       `G#|Ab` + A + `A#|Bb` + B + -->
+<!--       c01 + c02 + c03 + c04 + c05 + c06 + -->
+<!--       c07 + c08 + c09 + c10 + c11 + c12, -->
+<!--     data = wrapped_features,          # Use the same name as the previous block. -->
+<!--   ) %>% -->
+<!--   step_center(all_predictors()) %>% -->
+<!--   step_scale(all_predictors())      # Converts to z-scores. -->
+<!--   # step_range(all_predictors())    # Sets range to [0, 1]. -->
 
 
 
 
-```{r trees, include=FALSE, echo=FALSE, message=FALSE}
+<!-- ``` -->
 
-tree_model <-
-  decision_tree() %>%
-  set_mode("classification") %>%
-  set_engine("C5.0")
-wrapped_tree <-
-  workflow() %>%
-  add_recipe(wrappedcipe) %>%
-  add_model(tree_model) %>%
-  fit_resamples(
-    wrapped_cv,
-    control = control_resamples(save_pred = TRUE)
-  )
-```
 
-```{r forest, include=FALSE, echo=FALSE, message=FALSE}
-forestcipe <-
-  recipe(
-    playlist ~
-      danceability +
-      energy +
-      speechiness +
-      acousticness +
-      liveness +
-      duration +
-      C + `C#|Db` +  `D#|Eb` +
-       G + `A#|Bb` + B +
-      c01 + c02 + c03 + c05 + c06 +
-       c08 + c09 + c10 ,
-    data = wrapped_features,          # Use the same name as the previous block.
-  ) %>%
-  step_center(all_predictors()) %>%
-  step_scale(all_predictors())      # Converts to z-scores.
-  # step_range(all_predictors())    # Sets range to [0, 1].
+<!-- ```{r class, include=FALSE, echo=FALSE, message=FALSE} -->
+<!-- wrapped_cv <- wrapped_features %>% vfold_cv(5) -->
+
+<!-- knn_model <- -->
+<!--   nearest_neighbor(neighbors = 1) %>% -->
+<!--   set_mode("classification") %>% -->
+<!--   set_engine("kknn") -->
+<!-- wrapped_knn <- -->
+<!--   workflow() %>% -->
+<!--   add_recipe(wrappedcipe) %>% -->
+<!--   add_model(knn_model) %>% -->
+<!--   fit_resamples( -->
+<!--     wrapped_cv, -->
+<!--     control = control_resamples(save_pred = TRUE) -->
+<!--     ) -->
+<!-- ``` -->
 
 
 
-forest_model <-
-  rand_forest() %>%
-  set_mode("classification") %>%
-  set_engine("ranger", importance = "impurity")
-wrapped_forest <-
-  workflow() %>%
-  add_recipe(forestcipe) %>%
-  add_model(forest_model) %>%
-  fit_resamples(
-    wrapped_cv,
-    control = control_resamples(save_pred = TRUE)
-  )
 
-forest_feat <- workflow() %>%
-  add_recipe(forestcipe) %>%
-  add_model(forest_model) %>%
-  fit(wrapped_features) %>%
-  pluck("fit", "fit", "fit") %>%
-  ranger::importance() %>%
-  enframe() %>%
-  mutate(name = fct_reorder(name, value)) %>%
-  ggplot(aes(name, value)) +
-  geom_col() +
-  coord_flip() +
-  theme_tufte() +
-  labs(x = NULL, y = "Importance", title =  "Important Features Random Forest Classifier ")
-```
+<!-- ```{r trees, include=FALSE, echo=FALSE, message=FALSE} -->
+
+<!-- tree_model <- -->
+<!--   decision_tree() %>% -->
+<!--   set_mode("classification") %>% -->
+<!--   set_engine("C5.0") -->
+<!-- wrapped_tree <- -->
+<!--   workflow() %>% -->
+<!--   add_recipe(wrappedcipe) %>% -->
+<!--   add_model(tree_model) %>% -->
+<!--   fit_resamples( -->
+<!--     wrapped_cv, -->
+<!--     control = control_resamples(save_pred = TRUE) -->
+<!--   ) -->
+<!-- ``` -->
+
+<!-- ```{r forest, include=FALSE, echo=FALSE, message=FALSE} -->
+<!-- forestcipe <- -->
+<!--   recipe( -->
+<!--     playlist ~ -->
+<!--       danceability + -->
+<!--       energy + -->
+<!--       speechiness + -->
+<!--       acousticness + -->
+<!--       liveness + -->
+<!--       duration + -->
+<!--       C + `C#|Db` +  `D#|Eb` + -->
+<!--        G + `A#|Bb` + B + -->
+<!--       c01 + c02 + c03 + c05 + c06 + -->
+<!--        c08 + c09 + c10 , -->
+<!--     data = wrapped_features,          # Use the same name as the previous block. -->
+<!--   ) %>% -->
+<!--   step_center(all_predictors()) %>% -->
+<!--   step_scale(all_predictors())      # Converts to z-scores. -->
+<!--   # step_range(all_predictors())    # Sets range to [0, 1]. -->
+
+
+
+<!-- forest_model <- -->
+<!--   rand_forest() %>% -->
+<!--   set_mode("classification") %>% -->
+<!--   set_engine("ranger", importance = "impurity") -->
+<!-- wrapped_forest <- -->
+<!--   workflow() %>% -->
+<!--   add_recipe(forestcipe) %>% -->
+<!--   add_model(forest_model) %>% -->
+<!--   fit_resamples( -->
+<!--     wrapped_cv, -->
+<!--     control = control_resamples(save_pred = TRUE) -->
+<!--   ) -->
+
+<!-- forest_feat <- workflow() %>% -->
+<!--   add_recipe(forestcipe) %>% -->
+<!--   add_model(forest_model) %>% -->
+<!--   fit(wrapped_features) %>% -->
+<!--   pluck("fit", "fit", "fit") %>% -->
+<!--   ranger::importance() %>% -->
+<!--   enframe() %>% -->
+<!--   mutate(name = fct_reorder(name, value)) %>% -->
+<!--   ggplot(aes(name, value)) + -->
+<!--   geom_col() + -->
+<!--   coord_flip() + -->
+<!--   theme_tufte() + -->
+<!--   labs(x = NULL, y = "Importance", title =  "Important Features Random Forest Classifier ") -->
+<!-- ``` -->
 
 
 
@@ -792,7 +792,7 @@ ggplotly(histtempo)
 
 ***
 
-* The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.
+* The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM this seems to conform to Moelants(2002) which suggests that humans prefer tempi around 120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.  
 
 
 ### And Time again (Tempograms for Favorites/Outliers)
@@ -808,7 +808,24 @@ knitr::include_graphics("tempograms.png")
 
 * Favorites/Outliers:
 
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed>
+</object>
+
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
+</object>
+
 * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147.
+
 
 * 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something i would listen to on the regular. As expected spotfity can't really figure out the tempo as this song is just atmospheric sounds without a distinct way to measure tempo.
 
@@ -816,28 +833,27 @@ knitr::include_graphics("tempograms.png")
 
 * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124.
 
-#### Sample per song
-```{=html}
-<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed>
-</object>
-  
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
-</object>
-```
+<!-- ```{=html} -->
+<!-- <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"> -->
+<!--     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed> -->
+<!-- </object> -->
+
+<!-- <object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"> -->
+<!--     <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed> -->
+<!-- </object> -->
+
+<!-- <object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"> -->
+<!--     <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed> -->
+<!-- </object> -->
+
+<!-- <object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"> -->
+<!--     <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed> -->
+<!-- </object> -->
+<!-- ``` -->
 
 
 
-### Acchordingly (Chordograms for Outliers) 
+### Acchordingly (Chordograms for Favorites/Outliers) 
 
 ```{r echo=FALSE, message=FALSE, figures-side, fig.show="hold", out.width="50%"}
 Suburplot 
@@ -948,19 +964,19 @@ bind_rows(
 
 
 ```{r classi, echo=FALSE, message=FALSE, fig.show="hold", out.width="50%"}
-knn <- wrapped_knn %>% get_conf_mat() %>%
-  autoplot(type = "heatmap") +
-  labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
-  scale_fill_viridis_c( guide = "none", option = "inferno")
-
-
-
-# knn_feat
-
-forest <- wrapped_forest %>% get_conf_mat() %>%
-  autoplot(type = "heatmap") +
-  labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
-  scale_fill_viridis_c(guide = "none", option = "inferno")
+# knn <- wrapped_knn %>% get_conf_mat() %>%
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
+#   scale_fill_viridis_c( guide = "none", option = "inferno")
+# 
+# 
+# 
+# # knn_feat
+# 
+# forest <- wrapped_forest %>% get_conf_mat() %>%
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
+#   scale_fill_viridis_c(guide = "none", option = "inferno")
 
 knitr::include_graphics("classi.png")
 knitr::include_graphics("classi2.png")
@@ -987,6 +1003,6 @@ knitr::include_graphics("features.png")
 
 * 2019 was excluded due to errors.
 
-* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. Another weird thing worth noting is the correlation between 2016 and 2018 for both classfiers. The classifiers keep labeling 2016 as 2018 and vice versa,
+* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest classifier 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. Another thing worth noting is the correlation between 2016 and 2018 for both classifiers. The classifiers keep labeling 2016 as 2018 and vice versa. The k-nearest neighbors classifier was trained on all of the features and the random forest trained only on the top half of the features from the feature importance plot.
 
 
