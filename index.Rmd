@@ -1,6 +1,6 @@
 ---
 title: "Music Taste"
-author: "Sebastiaan Aflaki"
+author: "Sebas Aflaki"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -752,12 +752,12 @@ In addition i'd like to analyze my most frequently listened song and one favorit
     <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="25%" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="25%" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="25%" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="25%" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="25%" height="80"></embed>
 </object>
 ```
 
@@ -834,7 +834,6 @@ knitr::include_graphics("tempograms.png")
 
 * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: a favorite because it has different sections, tempo and time signature changes making it a very unique song. At 50 seconds in, the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124.
 
-* Not really relevant to my music taste.
 
 ### Acchordingly (**Chordograms** for Favorites/Outliers) 
 
@@ -857,10 +856,6 @@ Buildplot
 * 2018 Bohemian Rhapsody - Queen: a favorite because it has different sections and tempo changes.
 
 * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: a favorite because it has different sections, tempo and time signature changes making it a very unique song.
-
-
-
-
 
 
 ### Keyp on moving (**Key Frequency**) 
