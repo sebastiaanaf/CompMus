@@ -507,15 +507,15 @@ ggplot(aes(x = factor(key_name), fill = mode_name)) +
   scale_fill_discrete(guide=FALSE) +
   facet_wrap(~category)
 
-modefreqyear <- wrapped_16_20 %>%
-  ggplot(aes(x = factor(mode))) +
-  geom_bar() +
-  xlab("Mode (factored)") +
-  ylab("Frequency")+
-  ggtitle("Mode Spotify wrapped per year") +
-  scale_x_discrete(labels=c("0" = "Minor", "1" = "Major")) +
-  theme_tufte() +
-  facet_wrap(~category)
+# modefreqyear <- wrapped_16_20 %>%
+#   ggplot(aes(x = factor(mode))) +
+#   geom_bar() +
+#   xlab("Mode (factored)") +
+#   ylab("Frequency")+
+#   ggtitle("Mode Spotify wrapped per year") +
+#   scale_x_discrete(labels=c("0" = "Minor", "1" = "Major")) +
+#   theme_tufte() +
+#   facet_wrap(~category)
 
 valdens <-  wrapped_16_20 %>%
   ggplot(aes( x = valence)) +
@@ -524,50 +524,51 @@ valdens <-  wrapped_16_20 %>%
                    colour="black", fill="white") +
     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
   facet_wrap(~category) +
-  theme_tufte() 
+  scale_color_viridis_c(option="inferno") +
+  theme_tufte()
 
-yearenergy <-  wrapped_16_20 %>%
-  ggplot(aes( x = energy)) +
-   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
-                   binwidth=.5,
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
-  facet_wrap(~category) +
-  theme_tufte() 
-
-yearloudness <-  wrapped_16_20 %>%
-  ggplot(aes( x = loudness)) +
-   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
-                   binwidth=.5,
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
-  facet_wrap(~category) +
-  theme_tufte() 
-
-
-yeardanceability <-  wrapped_16_20 %>%
-  ggplot(aes( x = danceability)) +
-   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
-                   binwidth=.5,
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
-  facet_wrap(~category) +
-  theme_tufte() 
-
-yearacousticness <-  wrapped_16_20 %>%
-  ggplot(aes( x = acousticness)) +
-   geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
-                   binwidth=.5,
-                   colour="black", fill="white") +
-    geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
-  facet_wrap(~category) +
-  theme_tufte() 
-
-yearinstrumentalness <-  wrapped_16_20 %>%
-  ggplot(aes( x = instrumentalness)) +
-  geom_histogram(binwidth=.5,colour="black", fill="white") +
-  facet_wrap(~category) +
-  theme_tufte() 
+# yearenergy <-  wrapped_16_20 %>%
+#   ggplot(aes( x = energy)) +
+#    geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+#                    binwidth=.5,
+#                    colour="black", fill="white") +
+#     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+#   facet_wrap(~category) +
+#   theme_tufte() 
+# 
+# yearloudness <-  wrapped_16_20 %>%
+#   ggplot(aes( x = loudness)) +
+#    geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+#                    binwidth=.5,
+#                    colour="black", fill="white") +
+#     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+#   facet_wrap(~category) +
+#   theme_tufte() 
+# 
+# 
+# yeardanceability <-  wrapped_16_20 %>%
+#   ggplot(aes( x = danceability)) +
+#    geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+#                    binwidth=.5,
+#                    colour="black", fill="white") +
+#     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+#   facet_wrap(~category) +
+#   theme_tufte() 
+# 
+# yearacousticness <-  wrapped_16_20 %>%
+#   ggplot(aes( x = acousticness)) +
+#    geom_histogram(aes(stat = "bin", y=..density..),      # Histogram with density instead of count on y-axis
+#                    binwidth=.5,
+#                    colour="black", fill="white") +
+#     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
+#   facet_wrap(~category) +
+#   theme_tufte() 
+# 
+# yearinstrumentalness <-  wrapped_16_20 %>%
+#   ggplot(aes( x = instrumentalness)) +
+#   geom_histogram(binwidth=.5,colour="black", fill="white") +
+#   facet_wrap(~category) +
+#   theme_tufte() 
 
 histtempo <-  wrapped_16_20 %>%
   ggplot(aes( x = tempo)) +
@@ -575,8 +576,9 @@ histtempo <-  wrapped_16_20 %>%
                    colour="black", fill="white") +
     geom_density( alpha=.2, fill="#FF6666")  + # Overlay with transparent density plot
   facet_wrap(~category) +
-   labs(x = "Tempo (BPM)", y = "Density")
-  theme_tufte() 
+   labs(x = "Tempo (BPM)", y = "Density") +
+  scale_color_viridis_c(option="inferno") +
+  theme_tufte()
 
 
 ```
@@ -806,20 +808,20 @@ knitr::include_graphics("tempograms.png")
 
 *** 
 
-<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="200" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="200" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="200" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80"></embed>
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="200" height="80"></embed>
 </object>
 
 <!-- * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147. -->
