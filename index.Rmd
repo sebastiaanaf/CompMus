@@ -807,6 +807,7 @@ knitr::include_graphics("tempograms.png")
 *** 
 
 * Favorites/Outliers:
+<h1> TEST</h1>
 
 <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80">
     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80"></embed>
@@ -824,14 +825,14 @@ knitr::include_graphics("tempograms.png")
     <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
 </object>
 
-* 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147.
+<!-- * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147. -->
 
 
-* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something i would listen to on the regular. As expected spotfity can't really figure out the tempo as this song is just atmospheric sounds without a distinct way to measure tempo.
+<!-- * 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something i would listen to on the regular. As expected spotfity can't really figure out the tempo as this song is just atmospheric sounds without a distinct way to measure tempo. -->
 
-* 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes. You can clearly see the segment change where the staccato piano comes in and the tempo changes at around 180 seconds in and when the guitars solo's start at around 250 seconds in. Just as for every tempogram the tempo seems way off with the song having an average bpm of 72, while the tempogram shows 2 lines one at around 100-110 bpm and one at around 300 bpm possibly indicating that spotify has trouble identifying the tempo of songs that have these kinds of tempo changes.
+<!-- * 2018 Bohemian Rhapsody - Queen: an outlier because it has different sections and tempo changes. You can clearly see the segment change where the staccato piano comes in and the tempo changes at around 180 seconds in and when the guitars solo's start at around 250 seconds in. Just as for every tempogram the tempo seems way off with the song having an average bpm of 72, while the tempogram shows 2 lines one at around 100-110 bpm and one at around 300 bpm possibly indicating that spotify has trouble identifying the tempo of songs that have these kinds of tempo changes. -->
 
-* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124.
+<!-- * 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: an outlier because it has different sections, tempo changes and time signature changes which makes this a very unique song. At 50 seconds in the time signature changes to a 3/4 and then reverts back to 4/4 after a small section then another time signature change just after the 1 minute mark explains the small gap in the line. Spotify correctly finds the tempo change at 130 seconds. Once again the BPM is totally wrong with this song having an average tempo of 124. -->
 
 <!-- ```{=html} -->
 <!-- <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"> -->
