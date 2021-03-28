@@ -853,8 +853,9 @@ ggplotly(histtempo)
 * The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.
 
 
-### And Time again (Tempograms for Outliers)
+### And Time again (Tempograms for Favorites/Outliers)
 
+#### Sample per song
 ```{=html}
 <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140">
     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="140"></embed>
@@ -873,7 +874,7 @@ ggplotly(histtempo)
 </object>
 ```
 
-
+#### Tempograms
 ```{r echo=FALSE, message=FALSE}
 
 knitr::include_graphics("tempograms.png")
@@ -882,7 +883,7 @@ knitr::include_graphics("tempograms.png")
 
 *** 
 
-* Outliers:
+* Favorites/Outliers:
 
 * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147.
 
