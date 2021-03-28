@@ -806,23 +806,20 @@ knitr::include_graphics("tempograms.png")
 
 *** 
 
-* Favorites/Outliers:
-<h1> TEST</h1>
-
 <object data="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80">
     <embed src="https://open.spotify.com/embed/track/58KPPL1AdLHMvR2O2PZejr" width="280" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="140"></embed>
+<object data="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/2UZZtkoLOg7IHxeTAdPFvd" width="280" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="140"></embed>
+<object data="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/3z8h0TU7ReDPLIbEnYhWZb" width="280" height="80"></embed>
 </object>
 
-<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140">
-    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="140"></embed>
+<object data="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80">
+    <embed src="https://open.spotify.com/embed/track/7MMOPTjs6nZL0wf6C9ECKX" width="280" height="80"></embed>
 </object>
 
 <!-- * 2016 Jesus of Suburbia - Green Day: an outlier because the song has lots of different sections and tempo changes. You can clearly see some of the different sections in the tempogram with tempo changes at 100, 200 and 400 seconds. However the bpm is way off starting at 300 BPM and almost reaching 400 at 400 seconds in. While the average BPM is around 147. -->
