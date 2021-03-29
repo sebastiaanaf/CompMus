@@ -1006,7 +1006,7 @@ The classifiers had trouble distinguishing the Spotify Wrapped playlists from ea
 
 #### **Tempo**
 
-I can conclude that i have a fairly clear preference for songs with a tempo around 100 BPM which is interesting since it doesn't conform with Moelants(2002) which suggests that humans prefer tempi around 120-130 BPM. 
+I can conclude that i have a fairly clear preference for songs with a tempo around 100 BPM which is interesting since it doesn't conform with Moelants(2002), suggesting that humans prefer tempi around 120-130 BPM. 
 
 #### **Key and Modality**
 
