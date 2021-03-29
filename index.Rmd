@@ -1,6 +1,7 @@
 ---
 title: "Music Taste"
 author: "Sebas Aflaki"
+date: "Februari-March 2021"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
@@ -474,6 +475,8 @@ valendancepopyear <- wrapped_16_20 %>%
   ) +
   geom_point(alpha=0.7) +                   # Scatter plot.
   geom_rug(size = 0.1) +           # Add 'fringes' to show data distribution.
+  geom_smooth(size = 0.5, alpha= 0.7, color = "#b8627dff", fill = "#403891ff") +
+  # geom_hline(xintercept = mean(danceability), color="blue")
   facet_wrap(~category) +           # Separate charts per country.
   scale_x_continuous(              # Fine-tune the x axis.
     limits = c(0, 1),
@@ -737,9 +740,13 @@ histtempo <-  wrapped_16_20 %>%
 
 
 #### Spotify Wrapped 2016-2020
-Every december Spotify makes you a "wrapped" playlist of the 100 songs you most frequently listened to that year giving a clear picture of your music taste that year. I've always found that my music taste is kind of variable with a lot of different genre's so it would be interesting to see how my music taste has changed from 2016 till now. To compare my music taste from 2016 to 2020 i will analyze my Spotify wrapped 2016-2020 playlists using the following metrics: **valence, danceability, energy, tempo, key** and **modality.**
+Every december Spotify makes you a "wrapped" playlist of the 100 songs you most frequently listened to that year giving a clear picture of your music taste that year. I've always found that my music taste is kind of variable with a lot of different genre's so it would be interesting to see how my music taste has changed from 2016 till now. To compare my music taste from 2016 to 2020 i will analyze my Spotify wrapped 2016-2020 playlists using the following metrics: **valence, danceability, energy, tempo, key** and **modality.** 
 
-In addition i'd like to analyze my most frequently listened song and one favorite song or outlier from every playlist with the use of self similarity matrices, classifiers, tempo, chroma and chordograms. 
+I would also be interesting to see if a classifier can keep the playlists apart form eachother.
+
+I expect that my music will be average in valence since i do think i listen to happy and sad songs a fairly equal amount. Furthermore i expect to ahve listened to slighty more danceable and slightly less energetic music between 2016 and 2020 due to listening more to hiphop and electronic music and less to rock and pop. I expect the tempo to be all over the place as well as the key distribution. Modality is probably in a similar fashion to valence as i think major and minor mostly define if a song is happy or sad.
+
+In addition i'd like to analyze my most frequently listened song and one favorite song or outlier from every playlist with the use of self similarity matrices, tempo, chroma and chordograms. 
 
 #### Favorite/Outlier Samples:
 
@@ -787,7 +794,7 @@ ggplotly(valdens)
 
 ***
 
-* You can clearly see that most of my favorite songs in 2016, 2017 and 2018 were "happier" than my most favorite songs in 2019 and 2020. Although 2019 has some outliers with music used for sleeping which all have a really low valence score.
+* You can clearly see that from 2016 to 2018 i mainly listened to slightly happier music every year up to a peak of a 0.7 valence score. Reverting back to around a 0.5 valence score in 2019 and 2020. 2019 has some outliers with music used for sleeping which all have a really low valence score.
 
 
 ### Multivariate Musicology (**Valence**, **Energy**, **Danceability**)
@@ -800,9 +807,59 @@ ggplotly(valendancepopyear)
 
 ***
 
-* My music from 2016-2020 has generally become more and more danceable every year shifting to the right until in 2020 almost all songs have a danceability higher than 0.4. The energy distribution stays more or less the same every year.
+* The correlation between energy and danceability seems fairly similar in 2016 and 2018 indicating no correlation. Then 2017 and 2019 also look very similar with a positive correlation at around 50-60 danceability and 70-80 energy after which it usually goes down. In 2020 however, the correlation of energy and danceability seems negative.
+
+* My music from 2016-2020 has generally become more and more danceable every year shifting to the right until in 2020 almost all songs have a danceability higher than 0.4. My music seems to get slightly less energetic through the years. This can be explained by me listening more to hiphop and electronic music with high danceability but lower energy. 
 
 * As mentioned in the previous tab you can see the music used for sleeping in the 2019 plot at the bottom left it has a clear low score on just about every variable.
+
+
+### Wrapped Classification (**KNN, Random Forests**)
+
+
+```{r classi, echo=FALSE, message=FALSE, fig.show="hold", out.width="50%"}
+# knn <- wrapped_knn %>% get_conf_mat() %>%
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
+#   scale_fill_viridis_c( guide = "none", option = "inferno")
+# 
+# 
+# 
+# # knn_feat
+# 
+# forest <- wrapped_forest %>% get_conf_mat() %>%
+#   autoplot(type = "heatmap") +
+#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
+#   scale_fill_viridis_c(guide = "none", option = "inferno")
+
+knitr::include_graphics("classi.png")
+knitr::include_graphics("classi2.png")
+# knn 
+# forest 
+# plot_layout(ncol = 2)
+# knitr::include_graphics("heatmaps.png")
+
+
+knn_stat <- matrix(c(0.2566372, 0.2871287, 0.3258427, 0.2900000, 0.2427184, 0.2500000, 0.3541667,	0.3400000), ncol=2, byrow=TRUE)
+colnames(knn_stat) <- c("Precision","Recall")
+rownames(knn_stat) <- c("2016","2017","2018","2020")
+
+forest_stat <- matrix(c(0.2718447,	0.2772277, 0.3723404,	0.3500000, 0.2282609,	0.2100000, 0.4464286, 0.5000000), ncol=2, byrow=TRUE)
+colnames(forest_stat) <- c("Precision","Recall")
+rownames(forest_stat) <- c("2016","2017","2018","2020")
+
+grid.arrange(gtable_combine(tableGrob(knn_stat),tableGrob(forest_stat)))
+
+knitr::include_graphics("features.png")
+```
+
+***
+
+* 2019 was excluded due to errors.
+
+* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest classifier 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. The k-nearest neighbors classifier was trained on all of the features and the random forest trained only on the top half of the features from the feature importance plot.
+
+* Another thing worth noting is the correlation between 2016 and 2018 for both classifiers. The classifiers keep labeling 2016 as 2018 and vice versa. If we look at the the previous tab we can see where the mismatch originates from as two features **energy** and **danceability** seem to correlate in very similar ways in 2016 and 2018.
 
 
 ### Time... (**Tempo** Histogram with Density) 
@@ -813,8 +870,17 @@ ggplotly(histtempo)
 
 ***
 
-* The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100-120 BPM this seems to conform to Moelants(2002) which suggests that humans prefer tempi around 120 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020.  
+* The tempo of the songs in my spotify wrapped playlists mostly seem to hang around 100 BPM this doesn't seem to conform to Moelants(2002) which suggests that humans prefer tempi around 120-130 BPM. Starting at 110 BPM in 2016 then 100 BPM in 2017/2018, shooting up to 120 BPM in 2019 and reverting back to 100 BPM in 2020. Interesting to see is that every year there is a clear peak around 100 BPM.
 
+### Keyp on moving (**Key Frequency**) 
+
+```{r echo=FALSE, message=FALSE}
+ggplotly(keyfreqyear)
+```
+
+***
+
+* The key frequency doesn't change that much through the years other then flattening out a bit in 2017, 2019 and 2020. The mode seems fairly distributed between major and minor in most years except for 2018 where you can clearly see i listened to more songs with a major mode. 
 
 ### And Time Again (**Tempograms** for Favorites/Outliers) 
 
@@ -842,33 +908,19 @@ Suburplot
 Wplot 
 Bohemplot 
 Buildplot
-# plot_layout(ncol = 2)
 ```
 
 ***
 
 * Outliers:
 
-* 2016 Jesus of Suburbia - Green Day: a favorite because the song has lots of different sections and tempo changes.
+* 2016 Jesus of Suburbia - Green Day: a favorite because the song has lots of different sections and tempo changes. You can see the different sections a little bit shifting from A major to Ab Major to A minor and B minor then going back to and eventually going back to B minor in the end.
 
-* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something you would listen to on the regular.
+* 2017 Weightless part 1 - Marconi Union: an outlier because its sleep music and is not something you would listen to on the regular. As expected you cant really make up a clear structure since the sounds are so atmospheric.
 
-* 2018 Bohemian Rhapsody - Queen: a favorite because it has different sections and tempo changes.
+* 2018 Bohemian Rhapsody - Queen: a favorite because it has different sections and tempo changes. Spotify finds it hard to make up the chord structure but does map out the solo section starting at 210 seconds in pretty well.  
 
-* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: a favorite because it has different sections, tempo and time signature changes making it a very unique song.
-
-
-### Keyp on moving (**Key Frequency**) 
-
-```{r echo=FALSE, message=FALSE}
-ggplotly(keyfreqyear)
-```
-
-***
-
-* The key frequency doesn't change that much through the years other then flattening out a bit in 2017, 2019 and 2020. The mode seems fairly distributed between major and minor in most years except for 2018 where you can clearly see i listened to more songs with a major mode. 
-
-
+* 2019/2020 Build God, Then We'll Talk - Panic! At The Disco: a favorite because it has different sections, tempo and time signature changes making it a very unique song. As complicated as this song is structured Spotify seems to pick up on a lot of different chords but it's hard to see patterns emerge from it.
 
 ### Feels like summer (**Chromagram**)
 
@@ -937,49 +989,30 @@ bind_rows(
 * Chroma and Timbre self-similarity matrices for the song i most frequently listened to. At multiple segments in the song (at around 120, 300 and constantly during the outro) there is a section where most instruments fade out and come back in with Childish Gambino belting a high note, this could explain the intersections at those times in the chroma an timbre graphs. Whats interesting is that the timbre graph singles out the segment at 200 seconds. This is because not just some but all the other instruments stop for a moment as a opposed to earlier and later occurrences of a similar segment, resulting in the biggest difference in timbre.
 
 
-### Wrapped Classification (**KNN, Random Forests**)
+### Thats A Wrap! 
+
+#### **Valence**
+
+I expected the valence scores in my playlist to be consistently average. It appears however, that from 2016 to 2018 i started listening to happier music, after that the valence score reverted back to around 0.5 indicating that in 2019 and 2020 i mostly listened to music that's in between happy or sad. 
+
+#### **Danceability and Energy**
+
+My music from 2016-2020 has generally become more and more danceable every year shifting to the right until in 2020 almost all songs have a danceability higher than 0.4. My music seems to get slightly less energetic through the years. This can be explained by me listening more to hiphop and electronic music with high danceability but lower energy. It's interesting that the correlations between the 2016 and 2018 playlists and the correlation between 2017 and 2019 are fairly similar. This indicates that regarding danceability and energy my music taste for those years had been pretty similar. 2020 was more of an odd one out as the correlation looks nothing like the others, indicationg a distinct difference in danceability and energy.
 
 
-```{r classi, echo=FALSE, message=FALSE, fig.show="hold", out.width="50%"}
-# knn <- wrapped_knn %>% get_conf_mat() %>%
-#   autoplot(type = "heatmap") +
-#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "KNN heatmap for all features") +
-#   scale_fill_viridis_c( guide = "none", option = "inferno")
-# 
-# 
-# 
-# # knn_feat
-# 
-# forest <- wrapped_forest %>% get_conf_mat() %>%
-#   autoplot(type = "heatmap") +
-#   labs(title = "Spotify Wrapped 2016-2020", subtitle = "Random Forest heatmap using top features") +
-#   scale_fill_viridis_c(guide = "none", option = "inferno")
+#### **Classifiers**
 
-knitr::include_graphics("classi.png")
-knitr::include_graphics("classi2.png")
-# knn 
-# forest 
-# plot_layout(ncol = 2)
-# knitr::include_graphics("heatmaps.png")
+The classifiers had trouble distinguishing the Spotify Wrapped playlists from eachother. Probably meaning my music taste did not change that much. In 2020 however the music seemed to be distinct enough to correctly classify 50% of the playlist as coming from wrapped 2020. Songs from the 2016 and 2018 playlists kept being classified as eachother which indicates my music taste in these years must've been fairly similar. This is also supported by the correlation in the **Danceability and Energy** plot which is fairly similar in 2016 and 2018. The classifiers don't seem to show a correlation between 2017 and 2019 as much as was apparent from the **Danceability and Energy** plot.
+
+#### **Tempo**
+
+I can conclude that i have a fairly clear preference for songs with a tempo around 100 BPM which is interesting since it doesn't conform with Moelants(2002) which suggests that humans prefer tempi around 120-130 BPM. 
+
+#### **Key and Modality**
+
+The key frequency is fairly distributed across all years and doesn't change that much other than flattening out a bit in later years. As for the mode it is indeed fairly similar to how valence progressed as expected. The mode i evenly distributed between major and minor over all years except for a peak in major mode in 2018.
 
 
-knn_stat <- matrix(c(0.2566372, 0.2871287, 0.3258427, 0.2900000, 0.2427184, 0.2500000, 0.3541667,	0.3400000), ncol=2, byrow=TRUE)
-colnames(knn_stat) <- c("Precision","Recall")
-rownames(knn_stat) <- c("2016","2017","2018","2020")
 
-forest_stat <- matrix(c(0.2718447,	0.2772277, 0.3723404,	0.3500000, 0.2282609,	0.2100000, 0.4464286, 0.5000000), ncol=2, byrow=TRUE)
-colnames(forest_stat) <- c("Precision","Recall")
-rownames(forest_stat) <- c("2016","2017","2018","2020")
 
-grid.arrange(gtable_combine(tableGrob(knn_stat),tableGrob(forest_stat)))
 
-knitr::include_graphics("features.png")
-```
-
-***
-
-* 2019 was excluded due to errors.
-
-* Overall the classifiers don't work very well for my corpus but i expected as much. Since i do listen to a lot of different music the algorithms might have trouble finding distinct features for every year the different years. However, with limited features on the random forest classifier 2016, 2017 and 2020 seem to be working a lot better, almost classifying 50% correctly. Another thing worth noting is the correlation between 2016 and 2018 for both classifiers. The classifiers keep labeling 2016 as 2018 and vice versa. The k-nearest neighbors classifier was trained on all of the features and the random forest trained only on the top half of the features from the feature importance plot.
-
-### Thats A Wrap!
